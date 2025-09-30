@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sakshi Jewellers - Invoice Generator</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="watermark" id="watermark"></div>
+
+  <div class="container">
+    <!-- ================= HEADER ================= -->
+    <div class="header">
+      <h1>💎 Sakshi Jewellers</h1>
+      <p class="tagline">100% शुद्धता की गारंटी</p>
+    </div>
+
+    <!-- ================= BUSINESS INFO ================= -->
+    <div class="invoice-container">
+      <div class="invoice-header">
+        <div class="business-info">
+          <h2>Tax Invoice</h2>
+          <div class="business-details">
+            <div>Address: West from masjid Islampur, Mohni Sakrauli(Nanpur), Sitamarhi Bihar</div>
+            <div>Phone: 8298801698</div>
+            <div>Email: Ntqe.abhi99@gmail.com</div>
+            <div>GSTIN: 10EGNPK5303M1ZE</div>
+            <div>Proprietor: Nirmal Kr Chaudhary</div>
+          </div>
+        </div>
+
+        <div class="invoice-meta">
+          <div class="form-group">
+            <label>Invoice No</label>
+            <input type="text" id="invoiceNo" value="25-26-1">
+          </div>
+          <div class="form-group">
+            <label>Date</label>
+            <input type="date" id="invoiceDate">
+          </div>
+          <div class="form-group">
+            <label>Time</label>
+            <input type="time" id="invoiceTime">
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= CUSTOMER SECTION ================= -->
+      <div class="customer-section">
+        <h3>📑 Bill To</h3>
+        <div class="invoice-meta">
+          <div class="form-group">
+            <label>Customer Name</label>
+            <input type="text" placeholder="Enter customer name">
+          </div>
+          <div class="form-group">
+            <label>Address</label>
+            <input type="text" placeholder="Enter address">
+          </div>
+          <div class="form-group">
+            <label>Phone</label>
+            <input type="text" placeholder="Enter phone number">
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= ITEMS ================= -->
+      <div class="items-section">
+        <h3>💎 Items</h3>
+        <table class="items-table">
+          <thead>
+            <tr>
+              <th>Item Name</th>
+              <th>Qty</th>
+              <th>Unit</th>
+              <th>Weight</th>
+              <th> Price (₹)</th>
+              <th class="no-print">Additional Charges</th>
+              <th>Amount (₹)</th>
+            </tr>
+          </thead>
+          <tbody id="itemsBody">
+            <!-- Rows dynamically added by JS -->
+          </tbody>
+        </table>
+        <button class="btn btn-primary no-print" onclick="addItem()">➕ Add Item</button>
+      </div>
+
+      <!-- ================= COMMON CHARGES ================= -->
+      <div class="common-charges no-print">
+        <label><input type="checkbox" id="applyCommon"> Apply Common Charges to All Items</label><br>
+        GST %: <input type="number" id="commonGst" value="3">
+        Making %: <input type="number" id="commonMaking" value="10">
+        Discount %: <input type="number" id="commonDiscount" value="5">
+      </div>
+
+      <!-- ================= TOTALS ================= -->
+      <div class="totals-section">
+        <div class="totals-grid">
+          <div class="total-label">Subtotal:</div>
+          <div class="total-value" id="subtotal">₹0.00</div>
+          <div class="total-label">SGST:</div>
+          <div class="total-value" id="sgst">₹0.00</div>
+          <div class="total-label">CGST:</div>
+          <div class="total-value" id="cgst">₹0.00</div>
+          <div class="total-label">Round Off:</div>
+          <div class="total-value" id="roundOff">₹0.00</div>
+          <div class="total-label final-total">Total:</div>
+          <div class="total-value final-total" id="grandTotal">₹0.00</div>
+          <div class="total-label">Received:</div>
+          <div class="total-value"><input type="number" id="receivedAmount" value="0" oninput="calculateBalance()"></div>
+          <div class="total-label">Balance:</div>
+          <div class="total-value" id="balance">₹0.00</div>
+        </div>
+      </div>
+
+      <!-- ================= AMOUNT IN WORDS ================= -->
+      <div class="amount-words" id="amountWords">Amount in Words: Zero Rupees Only</div>
+
+      <!-- ================= DESCRIPTION ================= -->
+      <div class="description-terms">
+        <div class="form-group">
+          <label>Description</label>
+          <textarea rows="3">22k Returning 91.6% according to 22k rate returning
+18k Returning 75% according to 18k rate returning</textarea>
+        </div>
+        <div class="form-group">
+          <label>Terms & Conditions</label>
+          <textarea rows="3">Thank you for doing business with us.</textarea>
+        </div>
+      </div>
+
+      <!-- ================= ACTIONS ================= -->
+      <div class="actions no-print">
+        <button class="btn btn-success" onclick="generateInvoice()">📄 Generate Invoice</button>
+        <button class="btn btn-primary" onclick="printInvoice()">🖨️ Print / Save PDF</button>
+        <button class="btn btn-danger" onclick="resetInvoice()">🔄 Reset</button>
+            <button class="btn btn-primary" onclick="downloadPDF()">⬇️ Download PDF</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+<!-- jsPDF for PDF -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<!-- html2canvas for screenshot -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</html>
