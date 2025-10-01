@@ -5,10 +5,9 @@ let currentDiscountRow = null; // Charges removed, but keeping the declaration f
 
 // Initialize
 document.addEventListener('DOMContentLoaded', function() {
-    // Set current date and time
+    // Set current date (no time)
     const now = new Date();
     document.getElementById('invoice-date').value = now.toISOString().split('T')[0];
-    document.getElementById('invoice-time').value = now.toTimeString().split(' ')[0].substring(0, 5);
     
     // Set default description and terms
     document.getElementById('description').value = "22k Returning 91.6% according to 22k rate\n18k Returning 75% according to 18k rate";
@@ -198,14 +197,10 @@ function numberToWords(num) {
 // selectDiscountType() function removed as discount is removed
 
 function generateInvoice() {
-    const newInvoiceNo = `25-26-${String(invoiceCounter).padStart(2, '0')}`;
-    document.getElementById('invoice-no').value = newInvoiceNo;
-    invoiceCounter++;
     
-    // Update date and time
+    // Update date only (time update line removed)
     const now = new Date();
     document.getElementById('invoice-date').value = now.toISOString().split('T')[0];
-    document.getElementById('invoice-time').value = now.toTimeString().split(' ')[0].substring(0, 5);
     
     alert('Invoice generated successfully!');
 }
