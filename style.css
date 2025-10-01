@@ -552,26 +552,26 @@ body {
     }
 }
 
-/* Items table column sizing */
+/* Items table column sizing - UPDATED */
 .items-table th:nth-child(1), 
 .items-table td:nth-child(1) {
-    width: 30%;   /* Item Name bada */
+    width: 30%;   /* Item Name */
     text-align: left;
 }
 
 .items-table th:nth-child(2), 
 .items-table td:nth-child(2) {
-    width: 10%;    /* Qty chhota */
+    width: 8%;    /* Qty chhota */
 }
 
 .items-table th:nth-child(3), 
 .items-table td:nth-child(3) {
-    width: 12%;   /* Unit thoda bada */
+    width: 20%;   /* Weight thoda bada (input+select ke liye) */
 }
 
 .items-table th:nth-child(4), 
 .items-table td:nth-child(4) {
-    width: 20%;   /* Weight thoda bada (input+select ke liye) */
+    width: 18%;   /* New Rate column */
 }
 
 .items-table th:nth-child(5), 
@@ -579,6 +579,13 @@ body {
     width: 18%;   /* Amount bada */
     font-weight: bold;
 }
+
+.items-table th:nth-child(6), 
+.items-table td:nth-child(6) {
+    width: 6%;   /* Action column (remaining width) */
+}
+
+
 .page-break-before {
     page-break-before: always;
 }
@@ -599,4 +606,15 @@ body {
         padding: 2px;
         height: auto;
     }
+}
+/* Chrome, Safari, Edge ke liye */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox ke liye */
+input[type=number] {
+    -moz-appearance: textfield;
 }
