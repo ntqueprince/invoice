@@ -22,7 +22,16 @@
         <div class="header">
             <h1>⚜️ Sakshi Jewellers</h1>
             <div class="tagline">100% शुद्धता की गारंटी</div>
-        </div>
+            
+            <div class="invoice-header-meta">
+                <div class="meta-item left">
+                    <strong>Invoice No.</strong>
+                    <input type="text" id="invoice-no" value="25-26-01"> </div>
+                <div class="meta-item right">
+                    <strong>Date</strong>
+                    <input type="date" id="invoice-date"> </div>
+            </div>
+            </div>
 
         <div class="invoice-details">
             <div class="details-grid">
@@ -66,38 +75,36 @@
         </div>
 
         <div class="main-content">
-            <div class="invoice-meta">
-                <div class="meta-group">
-                    <label>Invoice No.</label>
-                    <input type="text" id="invoice-no" value="25-26-01">
-                </div>
-                <div class="meta-group">
-                    <label>Date</label>
-                    <input type="date" id="invoice-date">
-                </div>
-                <div class="meta-group">
-                    <label>Time</label>
-                    <input type="time" id="invoice-time">
-                </div>
-            </div>
-
-            <div class="customer-section">
-                <h3>📋 Bill To</h3>
-                <div class="customer-grid">
-                    <div class="meta-group">
-                        <label>Customer Name</label>
-                        <input type="text" id="customer-name" placeholder="Enter customer name">
-                    </div>
-                    <div class="meta-group">
-                        <label>Address</label>
-                        <input type="text" id="customer-address" placeholder="Enter address">
-                    </div>
-                    <div class="meta-group">
-                        <label>Phone</label>
-                        <input type="text" id="customer-phone" placeholder="Enter phone number">
-                    </div>
-                </div>
-            </div>
+            <div class="customer-section compact-customer">
+    <div class="customer-grid">
+        <div class="meta-group">
+            <label>Customer Name</label>
+            <input type="text" id="customer-name" placeholder="Enter customer name">
+        </div>
+        
+        <div class="meta-group">
+            <label>Village</label>
+            <input type="text" id="customer-village" placeholder="Enter Village">
+        </div>
+        <div class="meta-group">
+            <label>P.S.</label>
+            <input type="text" id="customer-ps" placeholder="Enter Police Station">
+        </div>
+        <div class="meta-group">
+            <label>District</label>
+            <input type="text" id="customer-district" placeholder="Enter District">
+        </div>
+        <div class="meta-group">
+            <label>State</label>
+            <input type="text" id="customer-state" placeholder="Enter State">
+        </div>
+        
+        <div class="meta-group">
+            <label>Phone</label>
+            <input type="text" id="customer-phone" placeholder="Enter phone number">
+        </div>
+    </div>
+</div>
 
             <div class="items-section page-break-before">
                 <div class="items-header">
