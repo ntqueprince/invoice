@@ -36,63 +36,125 @@ body {
     margin: 0 auto;
     background: white;
     border-radius: 15px;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
     overflow: hidden;
 }
 
+/* --- HEADER STYLES --- */
 .header {
     background: linear-gradient(135deg, #D2691E 0%, #8B4513 100%);
     color: white;
     text-align: center;
-    padding: 30px;
+    padding: 15px;
     position: relative;
+    /* Added space at the bottom for the new meta details */
+    padding-bottom: 50px; 
 }
 
 .header h1 {
-    font-size: 2.5rem;
-    margin-bottom: 10px;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    font-size: 1.5rem;
+    margin-bottom: 5px;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.3); 
 }
 
 .header .tagline {
-    font-size: 1.1rem;
+    font-size: 0.9rem;
     opacity: 0.9;
 }
 
+/* ✅ NEW: Styles for Invoice No. and Date inside header */
+.invoice-header-meta {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 15px 8px 15px; /* Padding for visual separation */
+    font-size: 0.9rem;
+}
+
+.invoice-header-meta .meta-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.invoice-header-meta .meta-item strong {
+    font-weight: bold;
+    color: #ffd700; /* Gold color for labels */
+}
+
+/* Input styles within the header for Invoice No. and Date */
+.invoice-header-meta input {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 0.9rem;
+    padding: 0;
+    width: auto;
+    font-weight: bold;
+    text-align: right; /* Date ko right align karne ke liye */
+}
+
+.invoice-header-meta .left input {
+    text-align: left;
+}
+/* ----------------------------------------------------- */
+
+/* --- INVOICE DETAILS --- */
 .invoice-details {
     background: #8B4513;
     color: white;
-    padding: 20px;
+    padding: 10px;
 }
 
 .details-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 15px;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 10px;
 }
 
 .detail-item {
     background: rgba(255,255,255,0.1);
-    padding: 12px;
-    border-radius: 8px;
+    padding: 6px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.9rem;
+}
+
+.detail-icon {
+    font-size: 1rem;
+}
+
+.main-content {
+    padding: 20px;
+}
+
+/* ❌ REMOVED: .invoice-meta (it was for the old Invoice No/Date/Time section) */
+
+.customer-section {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 30px;
+}
+
+.customer-section h3 {
+    color: #8B4513;
+    margin-bottom: 15px;
     display: flex;
     align-items: center;
     gap: 10px;
 }
 
-.detail-icon {
-    font-size: 1.2rem;
-}
-
-.main-content {
-    padding: 30px;
-}
-
-.invoice-meta {
+/* ✅ UPDATED: To 3 columns for better fit with more fields */
+.customer-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 20px;
-    margin-bottom: 30px;
+    gap: 15px;
 }
 
 .meta-group {
@@ -111,27 +173,6 @@ body {
     border: 2px solid #ddd;
     border-radius: 6px;
     font-size: 1rem;
-}
-
-.customer-section {
-    background: #f8f9fa;
-    padding: 20px;
-    border-radius: 10px;
-    margin-bottom: 30px;
-}
-
-.customer-section h3 {
-    color: #8B4513;
-    margin-bottom: 15px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.customer-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 15px;
 }
 
 .items-section {
@@ -199,14 +240,14 @@ body {
     text-align: center;
 }
 
-/* --- UPDATED STYLES FOR ITEMS TABLE --- */
+/* --- STYLES FOR ITEMS TABLE INPUTS --- */
 .items-table td input[type="number"], .items-table td input[type="text"] {
-    width: 100%; /* Default for most inputs */
+    width: 100%;
 }
 
 .weight-group {
     display: flex;
-    gap: 5px; /* space between input and select */
+    gap: 5px;
     align-items: center;
 }
 
@@ -240,7 +281,7 @@ body {
 
 .totals-grid {
     display: grid;
-    grid-template-columns: 1fr 300px; /* Right column made slightly wider for totals box */
+    grid-template-columns: 1fr 300px;
     gap: 20px;
 }
 
@@ -251,7 +292,7 @@ body {
     border-left: 4px solid #2196f3;
 }
 
-/* --- NEW STYLES FOR TOTALS BOX --- */
+/* --- STYLES FOR TOTALS BOX --- */
 .totals-box {
     background: white;
     border: 1px solid #ddd;
@@ -268,14 +309,13 @@ body {
     display: flex;
     justify-content: space-between;
     padding: 8px 0;
-    border-bottom: 1px dashed #ddd; /* Changed to dashed for a lighter look */
+    border-bottom: 1px dashed #ddd;
 }
 
 .totals-table tr:last-child {
     border-bottom: none;
 }
 
-/* Align text and amounts properly */
 .totals-table td:first-child {
     text-align: left;
     font-weight: normal;
@@ -296,7 +336,7 @@ body {
 .total-row {
     font-weight: bold;
     font-size: 1.1rem;
-    color: #8B4513; /* Highlight color for Total */
+    color: #8B4513;
     border-bottom: 2px solid #8B4513 !important;
     margin-top: 10px;
     padding-top: 10px !important;
@@ -305,7 +345,7 @@ body {
 .balance-row {
     font-weight: bold;
     font-size: 1.2rem;
-    color: #28a745; /* Green color for Balance */
+    color: #28a745;
     margin-top: 5px;
     padding-top: 10px !important;
 }
@@ -333,16 +373,16 @@ body {
 /* ----------------------------------- */
 
 
-/* --- UPDATED SECTION FOR VERTICAL LAYOUT --- */
+/* --- DESCRIPTION AND TERMS SECTION --- */
 .description-terms-vertical {
     display: flex;
-    flex-direction: column; /* Items ab ek ke neeche ek aayenge */
+    flex-direction: column;
     gap: 20px;
     margin-bottom: 30px;
 }
 
 .description-terms-vertical .vertical-item {
-    width: 100%; /* Har item puri width lega */
+    width: 100%;
 }
 
 .description-terms-vertical textarea {
@@ -403,6 +443,7 @@ body {
     box-shadow: 0 5px 15px rgba(0,0,0,0.2);
 }
 
+/* Modal styles (kept for reference, though discount modal removed) */
 .modal {
     display: none;
     position: fixed;
@@ -463,6 +504,41 @@ body {
     .watermark {
         opacity: 0.03;
     }
+
+    /* Print ke liye header aur details ko aur chhota karein */
+    .header {
+        padding-bottom: 40px; /* Reduced padding for print */
+    }
+
+    .header h1 {
+        font-size: 1.3rem;
+    }
+    .header .tagline {
+        font-size: 0.8rem;
+    }
+    
+    /* ✅ NEW: Print styles for header meta */
+    .invoice-header-meta {
+        padding-bottom: 5px;
+    }
+    .invoice-header-meta input {
+        /* Important for forcing white text in print/PDF */
+        color: white !important;
+        -webkit-print-color-adjust: exact;
+        color-adjust: exact;
+    }
+    /* ------------------------------------- */
+
+    .detail-item {
+        font-size: 0.8rem;
+        padding: 4px;
+    }
+    .invoice-details {
+        padding: 8px;
+    }
+    .main-content {
+        padding: 15px;
+    }
     
     /* PDF/Print ke liye text wrapping theek karein */
     .description-terms-vertical textarea {
@@ -470,9 +546,9 @@ body {
         line-height: 1.2;
         white-space: pre-wrap;
     }
-    /* Print ke dauran weight input aur select ko thoda adjust karein */
+    /* Print mein weight input aur select ko thoda adjust karein */
     .weight-group {
-        display: block; /* print mein side-by-side se hatakar block bana diya */
+        display: block;
     }
     .weight-group input[type="number"], .weight-group select {
         width: 100%;
@@ -496,6 +572,23 @@ body {
     }
     .gst-selector {
         display: none; /* GST selector print mein nahi chahiye */
+    }
+
+    /* Print mein table ko compact rakhein */
+    .items-table {
+        font-size: 11px;
+    }
+
+    .items-table th,
+    .items-table td {
+        padding: 3px 5px;
+    }
+
+    .items-table input,
+    .items-table select {
+        font-size: 11px;
+        padding: 2px;
+        height: auto;
     }
 }
 
@@ -522,19 +615,28 @@ body {
         grid-template-columns: 1fr;
     }
     
-    .invoice-meta {
-        grid-template-columns: 1fr;
-    }
-    
     .customer-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr; /* On small screens, stack all fields */
     }
     
     .totals-grid {
         grid-template-columns: 1fr;
     }
+
+    /* Header meta ko stacked karo on small screens */
+    .invoice-header-meta {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 0 15px 5px 15px;
+    }
+    .invoice-header-meta .meta-item {
+        width: 100%;
+        justify-content: space-between;
+    }
+    .invoice-header-meta .meta-item input {
+        text-align: right !important;
+    }
     
-    /* Description & Terms ab already vertical hai, par yahaan bhi confirm kar dete hain */
     .description-terms-vertical {
         flex-direction: column;
     }
@@ -552,7 +654,7 @@ body {
     }
 }
 
-/* Items table column sizing - UPDATED */
+/* Items table column sizing */
 .items-table th:nth-child(1), 
 .items-table td:nth-child(1) {
     width: 30%;   /* Item Name */
@@ -571,7 +673,7 @@ body {
 
 .items-table th:nth-child(4), 
 .items-table td:nth-child(4) {
-    width: 18%;   /* New Rate column */
+    width: 18%;   /* Rate column */
 }
 
 .items-table th:nth-child(5), 
@@ -582,31 +684,14 @@ body {
 
 .items-table th:nth-child(6), 
 .items-table td:nth-child(6) {
-    width: 6%;   /* Action column (remaining width) */
+    width: 6%;   /* Action column */
 }
 
 
 .page-break-before {
     page-break-before: always;
 }
-/* Print ke liye compact table */
-@media print {
-    .items-table {
-        font-size: 11px;   /* font chhota */
-    }
 
-    .items-table th,
-    .items-table td {
-        padding: 3px 5px;   /* padding kam */
-    }
-
-    .items-table input,
-    .items-table select {
-        font-size: 11px;   /* input aur select bhi chhote */
-        padding: 2px;
-        height: auto;
-    }
-}
 /* Chrome, Safari, Edge ke liye */
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
@@ -617,4 +702,18 @@ input::-webkit-inner-spin-button {
 /* Firefox ke liye */
 input[type=number] {
     -moz-appearance: textfield;
+}
+/* Customer Section को छोटा और ऊपर लाने के लिए */
+.compact-customer {
+    margin-top: 15px;   /* ऊपर लाना */
+    padding: 10px;      /* padding कम */
+}
+
+.compact-customer .meta-group label {
+    font-size: 0.85rem; /* label छोटा */
+}
+
+.compact-customer input {
+    padding: 6px 8px;   /* input छोटा */
+    font-size: 0.9rem;
 }
