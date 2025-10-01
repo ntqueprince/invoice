@@ -99,7 +99,7 @@
                 </div>
             </div>
 
-            <div class="items-section">
+            <div class="items-section page-break-before">
                 <div class="items-header">
                     <h3>💎 Items</h3>
                     <button class="add-item-btn" onclick="addItem()">
@@ -114,7 +114,6 @@
                             <th>Qty</th>
                             <th>Unit</th>
                             <th>Weight</th>
-                            <th>Unit Price (₹)</th>
                             <th>Amount (₹)</th>
                             <th class="action-column">Action</th>
                         </tr>
@@ -130,9 +129,16 @@
                                     <option value="Set">Set</option>
                                 </select>
                             </td>
-                            <td><input type="number" step="0.01" placeholder="0" onchange="calculateRow(this)"></td>
-                            <td><input type="number" step="0.01" placeholder="0.00" onchange="calculateRow(this)"></td>
-                            <td>₹<span class="amount">0.00</span></td>
+                            <td>
+                                <div class="weight-group">
+                                    <input type="number" step="0.01" placeholder="0.00" onchange="calculateRow(this)">
+                                    <select onchange="calculateRow(this)">
+                                        <option value="gm">gm</option>
+                                        <option value="mg">mg</option>
+                                    </select>
+                                </div>
+                            </td>
+                            <td><input type="number" step="0.01" placeholder="0.00" class="amount-input" onchange="calculateRow(this)"></td>
                             <td class="action-column"><button class="remove-btn" onclick="removeItem(this)">Remove</button></td>
                         </tr>
                     </tbody>
@@ -144,17 +150,30 @@
                     <div class="amount-in-words">
                         <h4>Amount in Words:</h4>
                         <div id="amount-words">Zero Rupees Only</div>
+                        
+                        <div class="gst-selector">
+                            <label for="gst">GST %:</label>
+                            <select id="gst" onchange="calculateTotals()">
+                                <script>
+                                    for (let i = 0; i <= 100; i++) {
+                                        document.write(`<option value="${i}">${i}%</option>`);
+                                    }
+                                </script>
+                            </select>
+                        </div>
                     </div>
-                    <div>
+                    
+                    <div class="totals-box">
                         <table class="totals-table">
-                            <tr><span>Subtotal:</span><span>₹<span id="subtotal">0.00</span></span></tr>
-                            <tr><span>Round Off:</span><span>₹<span id="round-off">0.00</span></span></tr>
-                            <tr><span>Total:</span><span>₹<span id="total">0.00</span></span></tr>
-                            <tr style="margin-top: 10px;"><span>Received:</span><span><input type="number" id="received" step="0.01" placeholder="0.00" onchange="calculateBalance()" style="width: 100px; text-align: right;"></span></tr>
-                            <tr><span>Balance:</span><span>₹<span id="balance">0.00</span></span></tr>
+                            <tr><td>Subtotal:</td><td>₹<span id="subtotal">0.00</span></td></tr>
+                            <tr><td>GST:</td><td>₹<span id="total-gst">0.00</span></td></tr>
+                            <tr><td>Round Off:</td><td>₹<span id="round-off">0.00</span></td></tr>
+                            <tr class="total-row"><td>Total:</td><td>₹<span id="total">0.00</span></td></tr>
+                            <tr class="received-row"><td>Received:</td><td><input type="number" id="received" step="0.01" placeholder="0.00" onchange="calculateBalance()"></td></tr>
+                            <tr class="balance-row"><td>Balance:</td><td>₹<span id="balance">0.00</span></td></tr>
                         </table>
                     </div>
-                </div>
+                    </div>
             </div>
 
             <div class="description-terms-vertical">
