@@ -9,10 +9,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const now = new Date();
     document.getElementById('invoice-date').value = now.toISOString().split('T')[0];
     
-    // Set default description and terms
-    document.getElementById('description').value = "22k Returning 91.6% according to 22k rate\n18k Returning 75% according to 18k rate";
-    document.getElementById('terms').value = "Thank you for doing business with us.";
-
+    // Set default terms
+    document.getElementById('terms').value = "22k Returning 91.6% according to 22k rate\n18k Returning 75% according to 18k rate";
+    
     // Initial total calculation
     calculateTotals();
 });
@@ -250,10 +249,8 @@ function downloadPDF() {
         });
     }
 
-    // Ensure text wrapping for description & terms
-    const description = document.getElementById('description');
+    // Ensure text wrapping for terms
     const terms = document.getElementById('terms');
-    description.style.whiteSpace = 'pre-wrap';
     terms.style.whiteSpace = 'pre-wrap';
 
     const opt = {
@@ -267,7 +264,6 @@ function downloadPDF() {
     html2pdf().set(opt).from(element).save().then(() => {
         // Wapas dikhana actions
         actions.style.display = 'flex';
-        description.style.whiteSpace = '';
         terms.style.whiteSpace = '';
 
         // Agar admin nahi hai to wapas screen par Action column dikhana
@@ -286,8 +282,7 @@ function resetInvoice() {
         document.getElementById('customer-address').value = '';
         document.getElementById('customer-phone').value = '';
         document.getElementById('received').value = '';
-        document.getElementById('description').value = "22k Returning 91.6% according to 22k rate\n18k Returning 75% according to 18k rate";
-        document.getElementById('terms').value = "Thank you for doing business with us.";
+        document.getElementById('terms').value = "22k Returning 91.6% according to 22k rate\n18k Returning 75% according to 18k rate";
         document.getElementById('gst').value = '0'; // Reset GST to 0%
         
         // Reset items table - simplified structure
