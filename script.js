@@ -1,347 +1,310 @@
-let itemCounter = 0;
-let currentDiscountRow = null;
+// Admin flag: agar admin login hai to true karo
+let isAdmin = false;   // 👈 abhi false rakha hai, jab admin ho tab true karna
+let invoiceCounter = 1;
+let currentDiscountRow = null; // Charges removed, but keeping the declaration for minimal change
 
-// ==============================
 // Initialize
-// ==============================
-document.addEventListener("DOMContentLoaded", function () {
-  const now = new Date();
-  const today = now.toISOString().split("T")[0];
-  const currentTime = now.toTimeString().split(" ")[0].substring(0, 5);
+document.addEventListener('DOMContentLoaded', function() {
+    // Set current date and time
+    const now = new Date();
+    document.getElementById('invoice-date').value = now.toISOString().split('T')[0];
+    document.getElementById('invoice-time').value = now.toTimeString().split(' ')[0].substring(0, 5);
+    
+    // Set default description and terms
+    document.getElementById('description').value = "22k Returning 91.6% according to 22k rate\n18k Returning 75% according to 18k rate";
+    document.getElementById('terms').value = "Thank you for doing business with us.";
 
-  document.getElementById("invoiceDate").value = today;
-  document.getElementById("invoiceTime").value = currentTime;
-
-  generateWatermark();
-  addItem();
+    // Initial total calculation
+    calculateTotals();
 });
 
-// ==============================
-// Watermark
-// ==============================
-function generateWatermark() {
-  const watermark = document.getElementById("watermark");
-  const text = "Sakshi Jewellers";
-  const positions = [
-    { top: "10%", left: "10%" },
-    { top: "10%", left: "60%" },
-    { top: "30%", left: "35%" },
-    { top: "50%", left: "10%" },
-    { top: "50%", left: "60%" },
-    { top: "70%", left: "35%" },
-    { top: "90%", left: "10%" },
-    { top: "90%", left: "60%" },
-  ];
-
-  positions.forEach((pos) => {
-    const span = document.createElement("span");
-    span.className = "watermark-text";
-    span.textContent = text;
-    span.style.top = pos.top;
-    span.style.left = pos.left;
-    watermark.appendChild(span);
-  });
-}
-
-// ==============================
-// Add Item Row
-// ==============================
 function addItem() {
-  itemCounter++;
-  const tbody = document.getElementById("itemsBody");
-  const row = document.createElement("tr");
-
-  row.innerHTML = `
-    <td><input type="text" class="item-input item-name" placeholder="Item"></td>
-    <td><input type="number" class="item-input item-qty" min="0" step="1" value="1" oninput="calculateRowTotal(this)"></td>
-    <td>
-      <select class="item-input item-unit">
-        <option value="piece">Piece</option>
-        <option value="pair">Pair</option>
-        <option value="set">Set</option>
-      </select>
-    </td>
-    <td>
-      <div style="display:flex;gap:5px;">
-        <input type="number" class="item-input item-weight" min="0" step="0.01" placeholder="0" oninput="calculateRowTotal(this)">
-        <select class="item-input item-weight-unit" onchange="calculateRowTotal(this)">
-          <option value="gm">gm</option>
-          <option value="mg">mg</option>
-        </select>
-      </div>
-    </td>
-<td><input type="number" class="item-input item-price" min="0" step="0.01" placeholder="0.00"></td>
-    <td class="no-print">
-      <div class="checkbox-group">
-        <div class="checkbox-item">
-          <input type="checkbox" onchange="toggleCharge(this,'gst')">
-          <label>GST %</label>
-          <input type="number" min="1" max="50" value="3" disabled onchange="calculateRowTotal(this)">
-        </div>
-        <div class="checkbox-item">
-          <input type="checkbox" onchange="toggleCharge(this,'making')">
-          <label>Making %</label>
-          <input type="number" min="1" max="100" value="10" disabled onchange="calculateRowTotal(this)">
-        </div>
-        <div class="checkbox-item">
-          <input type="checkbox" onchange="toggleCharge(this,'discount')">
-          <label>Discount %</label>
-          <input type="number" min="1" max="100" value="5" disabled onchange="calculateRowTotal(this)">
-        </div>
-      </div>
-    </td>
-    <td class="item-total">₹0.00</td>
-  `;
-  tbody.appendChild(row);
-  calculateTotals();
-}
-
-// ==============================
-// Charges Toggle
-// ==============================
-function toggleCharge(checkbox, type) {
-  const input = checkbox.parentElement.querySelector('input[type="number"]');
-  input.disabled = !checkbox.checked;
-
-  if (type === "discount" && checkbox.checked) {
-    currentDiscountRow = checkbox.closest("tr");
-    document.getElementById("discountModal").style.display = "block";
-  } else {
-    calculateRowTotal(checkbox);
-  }
-}
-
-function applyDiscount(type) {
-  if (currentDiscountRow) {
-    const discountCheckbox = currentDiscountRow.querySelector(
-      'input[type="checkbox"][onchange*="discount"]'
-    );
-    discountCheckbox.setAttribute("data-discount-type", type);
-    calculateRowTotal(discountCheckbox);
-  }
-  closeDiscountModal();
-}
-
-function closeDiscountModal() {
-  document.getElementById("discountModal").style.display = "none";
-  currentDiscountRow = null;
-}
-
-// ==============================
-// Row Total Calculation
-// ==============================
-function calculateRowTotal(element) {
-  const row = element.closest("tr");
-  const qty = parseFloat(row.querySelector(".item-qty").value) || 0;
-  const weight = parseFloat(row.querySelector(".item-weight").value) || 0;
-  const weightUnit = row.querySelector(".item-weight-unit").value;
-  const price = parseFloat(row.querySelector(".item-price").value) || 0;
-
-  // convert mg → gm
-  let finalWeight = weightUnit === "mg" ? weight / 1000 : weight;
-
-  let baseAmount = qty * finalWeight * price;
-  let finalAmount = baseAmount;
-
-  // Making
-  const makingCheckbox = row.querySelector(
-    'input[type="checkbox"][onchange*="making"]'
-  );
-  if (makingCheckbox && makingCheckbox.checked) {
-    const makingPercent =
-      parseFloat(
-        makingCheckbox.parentElement.querySelector('input[type="number"]').value
-      ) || 0;
-    finalAmount += baseAmount * makingPercent / 100;
-  }
-
-  // GST
-  const gstCheckbox = row.querySelector(
-    'input[type="checkbox"][onchange*="gst"]'
-  );
-  if (gstCheckbox && gstCheckbox.checked) {
-    const gstPercent =
-      parseFloat(
-        gstCheckbox.parentElement.querySelector('input[type="number"]').value
-      ) || 0;
-    finalAmount += finalAmount * gstPercent / 100;
-  }
-
-  // Discount
-  const discountCheckbox = row.querySelector(
-    'input[type="checkbox"][onchange*="discount"]'
-  );
-  if (discountCheckbox && discountCheckbox.checked) {
-    const discountPercent =
-      parseFloat(
-        discountCheckbox.parentElement.querySelector('input[type="number"]').value
-      ) || 0;
-    const discountType =
-      discountCheckbox.getAttribute("data-discount-type") || "base";
-    if (discountType === "base") {
-      finalAmount -= baseAmount * discountPercent / 100;
-    } else {
-      finalAmount -= finalAmount * discountPercent / 100;
+    const tbody = document.querySelector('#items-table tbody');
+    // Using the simplified structure for cloning
+    const originalRow = tbody.rows[0];
+    const newRow = originalRow ? originalRow.cloneNode(true) : document.createElement('tr');
+    
+    // Agar koi row nahi hai to naya structure add karein
+    if (tbody.rows.length === 0) {
+        newRow.innerHTML = `
+            <td><input type="text" placeholder="Item" onchange="calculateRow(this)"></td>
+            <td><input type="number" value="1" min="1" onchange="calculateRow(this)"></td>
+            <td>
+                <select onchange="calculateRow(this)">
+                    <option value="Piece">Piece</option>
+                    <option value="Pair">Pair</option>
+                    <option value="Set">Set</option>
+                </select>
+            </td>
+            <td><input type="number" step="0.01" placeholder="0" onchange="calculateRow(this)"></td>
+            <td><input type="number" step="0.01" placeholder="0.00" onchange="calculateRow(this)"></td>
+            <td>₹<span class="amount">0.00</span></td>
+            <td class="action-column"><button class="remove-btn" onclick="removeItem(this)">Remove</button></td>
+        `;
     }
-  }
 
-  row.querySelector(".item-total").textContent = `₹${finalAmount.toFixed(2)}`;
-  calculateTotals();
+    // Clear values
+    const inputs = newRow.querySelectorAll('input');
+    inputs.forEach(input => {
+        if (input.type === 'text' || input.type === 'number') {
+            input.value = input.type === 'number' && input.min === '1' ? '1' : '';
+        }
+    });
+    
+    newRow.querySelector('.amount').textContent = '0.00';
+    tbody.appendChild(newRow);
+    calculateTotals(); // New row added, recalculate totals
 }
 
-// ==============================
-// Totals Calculation
-// ==============================
+function removeItem(btn) {
+    const tbody = document.querySelector('#items-table tbody');
+    if (tbody.rows.length > 1) {
+        btn.closest('tr').remove();
+        calculateTotals();
+    }
+}
+
+// toggleCharge() function removed as charges are removed
+
+function calculateRow(element) {
+    const row = element.closest('tr');
+    // Qty, Unit Price ke inputs (Indices updated)
+    const qtyInput = row.querySelectorAll('input[type="number"]')[0];
+    const unitPriceInput = row.querySelectorAll('input[type="number"]')[2]; // Unit Price ab 3rd number input hai (0: Qty, 1: Weight, 2: Unit Price)
+
+    const qty = parseFloat(qtyInput.value) || 0;
+    const unitPrice = parseFloat(unitPriceInput.value) || 0;
+    
+    let finalAmount = qty * unitPrice; // Simplified: only base amount
+    
+    row.querySelector('.amount').textContent = finalAmount.toFixed(2);
+    calculateTotals();
+}
+
+// applyCommonCharges() function removed as charges are removed
+
 function calculateTotals() {
-  const rows = document.querySelectorAll("#itemsBody tr");
-  let subtotal = 0;
-  let totalGST = 0;
+    const rows = document.querySelectorAll('#items-table tbody tr');
+    let subtotal = 0;
+    
+    rows.forEach(row => {
+        // Amount jo display ho raha hai (Qty * Unit Price)
+        const amount = parseFloat(row.querySelector('.amount').textContent) || 0;
+        subtotal += amount;
+        
+        // GST logic removed
+    });
+    
+    // GST calculations removed, setting them to 0
+    const totalGST = 0;
+    const sgst = 0;
+    const cgst = 0;
 
-  rows.forEach((row) => {
-    const itemTotal = parseFloat(
-      row.querySelector(".item-total").textContent.replace("₹", "")
-    ) || 0;
-    subtotal += itemTotal;
-  });
-
-  // SGST + CGST
-  const sgst = totalGST / 2;
-  const cgst = totalGST / 2;
-  const roundOff = Math.round(subtotal) - subtotal;
-  const grandTotal = Math.round(subtotal);
-
-  document.getElementById("subtotal").textContent = `₹${(subtotal - totalGST).toFixed(2)}`;
-  document.getElementById("sgst").textContent = `₹${sgst.toFixed(2)}`;
-  document.getElementById("cgst").textContent = `₹${cgst.toFixed(2)}`;
-  document.getElementById("roundOff").textContent = `₹${roundOff.toFixed(2)}`;
-  document.getElementById("grandTotal").textContent = `₹${grandTotal.toFixed(2)}`;
-  document.getElementById("amountWords").textContent =
-    `Amount in Words: ${numberToWords(grandTotal)} Rupees Only`;
-
-  calculateBalance();
+    // Round Off is applied to the subtotal (New logic: subtotal + SGST + CGST)
+    const totalBeforeRoundOff = subtotal + sgst + cgst; 
+    const roundOff = Math.round(totalBeforeRoundOff) - totalBeforeRoundOff; 
+    
+    const finalSubtotal = subtotal; // Already calculated
+    const total = finalSubtotal + sgst + cgst + roundOff; // Sabko jodkar Total
+    
+    document.getElementById('subtotal').textContent = finalSubtotal.toFixed(2);
+    document.getElementById('sgst').textContent = sgst.toFixed(2);
+    document.getElementById('cgst').textContent = cgst.toFixed(2);
+    document.getElementById('round-off').textContent = roundOff.toFixed(2);
+    document.getElementById('total').textContent = total.toFixed(2);
+    
+    // Update amount in words
+    document.getElementById('amount-words').textContent = numberToWords(Math.round(total)) + ' Rupees Only';
+    
+    calculateBalance();
 }
 
-// ==============================
-// Balance
-// ==============================
 function calculateBalance() {
-  const grandTotal = parseFloat(
-    document.getElementById("grandTotal").textContent.replace("₹", "")
-  ) || 0;
-  const received = parseFloat(document.getElementById("receivedAmount").value) || 0;
-  document.getElementById("balance").textContent = `₹${(grandTotal - received).toFixed(2)}`;
+    const total = parseFloat(document.getElementById('total').textContent) || 0;
+    const received = parseFloat(document.getElementById('received').value) || 0;
+    const balance = total - received;
+    document.getElementById('balance').textContent = balance.toFixed(2);
 }
 
-// ==============================
-// Number to Words
-// ==============================
 function numberToWords(num) {
-  if (num === 0) return "Zero";
-  const ones = ["", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine"];
-  const teens = ["Ten","Eleven","Twelve","Thirteen","Fourteen","Fifteen","Sixteen","Seventeen","Eighteen","Nineteen"];
-  const tens = ["", "", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"];
-
-  function convertHundreds(n) {
-    let result = "";
-    if (n >= 100) { result += ones[Math.floor(n/100)] + " Hundred "; n %= 100; }
-    if (n >= 20) { result += tens[Math.floor(n/10)] + " "; if (n%10>0) result += ones[n%10]; }
-    else if (n >= 10) result += teens[n-10];
-    else if (n>0) result += ones[n];
+    if (num === 0) return 'Zero';
+    
+    const ones = ['', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine'];
+    const teens = ['Ten', 'Eleven', 'Twelve', 'Thirteen', 'Fourteen', 'Fifteen', 'Sixteen', 'Seventeen', 'Eighteen', 'Nineteen'];
+    const tens = ['', '', 'Twenty', 'Thirty', 'Forty', 'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety'];
+    
+    function convertHundreds(n) {
+        let result = '';
+        if (n >= 100) {
+            result += ones[Math.floor(n / 100)] + ' Hundred ';
+            n %= 100;
+        }
+        if (n >= 20) {
+            result += tens[Math.floor(n / 10)] + ' ';
+            n %= 10;
+        }
+        if (n >= 10) {
+            result += teens[n - 10] + ' ';
+        } else if (n > 0) {
+            result += ones[n] + ' ';
+        }
+        return result;
+    }
+    
+    let result = '';
+    // Indian Numbering System
+    if (num >= 10000000) {
+        result += convertHundreds(Math.floor(num / 10000000)) + 'Crore ';
+        num %= 10000000;
+    }
+    if (num >= 100000) {
+        result += convertHundreds(Math.floor(num / 100000)) + 'Lakh ';
+        num %= 100000;
+    }
+    if (num >= 1000) {
+        result += convertHundreds(Math.floor(num / 1000)) + 'Thousand ';
+        num %= 1000;
+    }
+    result += convertHundreds(num);
+    
     return result.trim();
-  }
-
-  const crores = Math.floor(num/10000000);
-  const lakhs = Math.floor((num%10000000)/100000);
-  const thousands = Math.floor((num%100000)/1000);
-  const hundreds = num % 1000;
-
-  let result = "";
-  if (crores) result += convertHundreds(crores) + " Crore ";
-  if (lakhs) result += convertHundreds(lakhs) + " Lakh ";
-  if (thousands) result += convertHundreds(thousands) + " Thousand ";
-  if (hundreds) result += convertHundreds(hundreds);
-  return result.trim();
 }
 
-// ==============================
-// Invoice Functions
-// ==============================
+// selectDiscountType() function removed as discount is removed
+
 function generateInvoice() {
-  let invoiceField = document.getElementById("invoiceNo");
-
-  // अगर invoice field खाली है तो default set करो
-  if (!invoiceField.value) {
-    invoiceField.value = "25-26-1";   // Default invoice number
-  } else {
-    // Current invoice split करके last number बढ़ाओ
-    let parts = invoiceField.value.split("-");
-    let currentNo = parseInt(parts[2]) || 0;
-    let newNo = currentNo + 1;
-
-    // First two parts same रहने दो (25-26), सिर्फ़ number बढ़ाओ
-    invoiceField.value = `${parts[0]}-${parts[1]}-${newNo}`;
-  }
-
-  alert("Invoice generated successfully! 🎉");
+    const newInvoiceNo = `25-26-${String(invoiceCounter).padStart(2, '0')}`;
+    document.getElementById('invoice-no').value = newInvoiceNo;
+    invoiceCounter++;
+    
+    // Update date and time
+    const now = new Date();
+    document.getElementById('invoice-date').value = now.toISOString().split('T')[0];
+    document.getElementById('invoice-time').value = now.toTimeString().split(' ')[0].substring(0, 5);
+    
+    alert('Invoice generated successfully!');
 }
 
 function printInvoice() {
-  document.body.classList.add("customer-view");
-  window.print();
-  setTimeout(() => document.body.classList.remove("customer-view"), 1000);
+    // Hide action buttons for printing
+    const actions = document.querySelector('.actions');
+    actions.style.display = 'none';
+    
+    // Agar admin nahi hai to Action column hide kar do
+    const actionCols = document.querySelectorAll('.items-table th.action-column, .items-table td.action-column');
+    const originalActionDisplay = [];
+    if (!isAdmin) {
+        actionCols.forEach(col => {
+            originalActionDisplay.push(col.style.display); // Store original display
+            col.style.display = 'none';
+        });
+    }
+
+    window.print();
+    
+    // Show action buttons and Action columns after printing
+    setTimeout(() => {
+        actions.style.display = 'flex';
+        if (!isAdmin) {
+            actionCols.forEach((col, index) => {
+                col.style.display = originalActionDisplay[index]; // Restore original display
+            });
+        }
+    }, 1000);
+}
+
+function downloadPDF() {
+    const element = document.getElementById('invoice-container');
+    const actions = document.querySelector('.actions');
+
+    // Action buttons (Generate, Print, PDF, Reset) hide karna
+    actions.style.display = 'none';
+
+    // Agar admin nahi hai to Action column hide kar do
+    const actionCols = document.querySelectorAll('.items-table th.action-column, .items-table td.action-column');
+    const originalActionDisplay = [];
+    if (!isAdmin) {
+        actionCols.forEach(col => {
+            originalActionDisplay.push(col.style.display); // Store original display
+            col.style.display = 'none';
+        });
+    }
+
+    // Ensure text wrapping for description & terms
+    const description = document.getElementById('description');
+    const terms = document.getElementById('terms');
+    description.style.whiteSpace = 'pre-wrap';
+    terms.style.whiteSpace = 'pre-wrap';
+
+    const opt = {
+        margin: [0.3, 0.3, 0.3, 0.3],
+        filename: `Invoice_${document.getElementById('invoice-no').value}_${document.getElementById('customer-name').value || 'Customer'}.pdf`,
+        image: { type: 'jpeg', quality: 0.95 },
+        html2canvas: { scale: 1.5, useCORS: true, allowTaint: true, scrollX: 0, scrollY: 0 },
+        jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait', compress: true }
+    };
+
+    html2pdf().set(opt).from(element).save().then(() => {
+        // Wapas dikhana actions
+        actions.style.display = 'flex';
+        description.style.whiteSpace = '';
+        terms.style.whiteSpace = '';
+
+        // Agar admin nahi hai to wapas screen par Action column dikhana
+        if (!isAdmin) {
+            actionCols.forEach((col, index) => {
+                col.style.display = originalActionDisplay[index]; // Restore original display
+            });
+        }
+    });
 }
 
 function resetInvoice() {
-  if (confirm("Are you sure you want to reset the invoice?")) location.reload();
+    if (confirm('Are you sure you want to reset the invoice? All data will be lost.')) {
+        // Reset all form fields
+        document.getElementById('customer-name').value = '';
+        document.getElementById('customer-address').value = '';
+        document.getElementById('customer-phone').value = '';
+        document.getElementById('received').value = '';
+        document.getElementById('description').value = "22k Returning 91.6% according to 22k rate\n18k Returning 75% according to 18k rate";
+        document.getElementById('terms').value = "Thank you for doing business with us.";
+        
+        // Reset items table - simplified structure
+        const tbody = document.querySelector('#items-table tbody');
+        tbody.innerHTML = `
+            <tr>
+                <td><input type="text" placeholder="Item" onchange="calculateRow(this)"></td>
+                <td><input type="number" value="1" min="1" onchange="calculateRow(this)"></td>
+                <td>
+                    <select onchange="calculateRow(this)">
+                        <option value="Piece">Piece</option>
+                        <option value="Pair">Pair</option>
+                        <option value="Set">Set</option>
+                    </select>
+                </td>
+                <td><input type="number" step="0.01" placeholder="0" onchange="calculateRow(this)"></td>
+                <td><input type="number" step="0.01" placeholder="0.00" onchange="calculateRow(this)"></td>
+                <td>₹<span class="amount">0.00</span></td>
+                <td class="action-column"><button class="remove-btn" onclick="removeItem(this)">Remove</button></td>
+            </tr>
+        `;
+        
+        // Reset common charges (HTML elements were removed, but keeping a call to clear in case of future changes)
+        // document.getElementById('common-gst').checked = false; // Removed
+        // document.getElementById('common-making').checked = false; // Removed
+        // document.getElementById('common-discount').checked = false; // Removed
+        
+        // Reset totals
+        calculateTotals();
+        
+        alert('Invoice reset successfully!');
+    }
 }
 
-// ==============================
-// Download PDF
-// ==============================
-// ==============================
-// Download PDF (Single Page + Adjust Font)
-// ==============================
-function downloadPDF() {
-  const invoice = document.querySelector(".container");
-
-  const noPrintEls = document.querySelectorAll(".no-print");
-  noPrintEls.forEach(el => el.style.display = "none");
-
-  // Description को छोटा font कर दो ताकि PDF में फिट आए
-  const desc = document.querySelector(".description-terms textarea");
-  if (desc) {
-    desc.style.fontSize = "12px";
-    desc.style.lineHeight = "1.4";
-  }
-
-  html2canvas(invoice, { scale: 2, useCORS: true }).then((canvas) => {
-    const imgData = canvas.toDataURL("image/jpeg", 1.0);
-    const pdf = new window.jspdf.jsPDF("p", "pt", "a4");
-
-    const pdfWidth = pdf.internal.pageSize.getWidth();
-    const pdfHeight = pdf.internal.pageSize.getHeight();
-
-    // सब कुछ एक पेज में squeeze करना
-    const imgWidth = pdfWidth;
-    const imgHeight = canvas.height * (pdfWidth / canvas.width);
-
-    // अगर height ज्यादा हो तो proportion कम कर दो
-    let finalHeight = imgHeight;
-    let finalWidth = imgWidth;
-    if (imgHeight > pdfHeight) {
-      finalHeight = pdfHeight;
-      finalWidth = canvas.width * (pdfHeight / canvas.height);
-    }
-
-    pdf.addImage(imgData, "JPEG", 0, 0, finalWidth, finalHeight);
-    pdf.save(`Invoice_${document.getElementById("invoiceNo").value}.pdf`);
-
-    // वापस original कर दो
-    if (desc) {
-      desc.style.fontSize = "";
-      desc.style.lineHeight = "";
-    }
-
-    noPrintEls.forEach(el => el.style.display = "");
-  });
+// Close modal when clicking outside - Discount Modal removed, so this is no longer strictly necessary but keeping for clean removal
+window.onclick = function(event) {
+    // const modal = document.getElementById('discount-modal'); // Modal removed
+    // if (event.target === modal) {
+    //     modal.style.display = 'none';
+    // }
 }
