@@ -36,9 +36,16 @@ function addItem() {
                     <option value="Set">Set</option>
                 </select>
             </td>
-            <td><input type="number" step="0.01" placeholder="0" onchange="calculateRow(this)"></td>
-            <td><input type="number" step="0.01" placeholder="0.00" onchange="calculateRow(this)"></td>
-            <td>₹<span class="amount">0.00</span></td>
+            <td>
+                <div class="weight-group">
+                    <input type="number" step="0.01" placeholder="0.00" onchange="calculateRow(this)">
+                    <select onchange="calculateRow(this)">
+                        <option value="gm">gm</option>
+                        <option value="mg">mg</option>
+                    </select>
+                </div>
+            </td>
+            <td><input type="number" step="0.01" placeholder="0.00" class="amount-input" onchange="calculateRow(this)"></td>
             <td class="action-column"><button class="remove-btn" onclick="removeItem(this)">Remove</button></td>
         `;
     }
@@ -46,12 +53,25 @@ function addItem() {
     // Clear values
     const inputs = newRow.querySelectorAll('input');
     inputs.forEach(input => {
-        if (input.type === 'text' || input.type === 'number') {
-            input.value = input.type === 'number' && input.min === '1' ? '1' : '';
+        if (input.type === 'text') {
+            input.value = '';
+        } else if (input.type === 'number') {
+            if (input.classList.contains('amount-input')) {
+                input.value = ''; // Amount input clear
+            } else if (input.min === '1') {
+                input.value = '1'; // Qty input
+            } else {
+                input.value = ''; // Weight input
+            }
         }
     });
     
-    newRow.querySelector('.amount').textContent = '0.00';
+    // Set default for weight unit
+    const weightSelect = newRow.querySelector('.weight-group select');
+    if (weightSelect) {
+        weightSelect.value = 'gm';
+    }
+
     tbody.appendChild(newRow);
     calculateTotals(); // New row added, recalculate totals
 }
@@ -67,17 +87,7 @@ function removeItem(btn) {
 // toggleCharge() function removed as charges are removed
 
 function calculateRow(element) {
-    const row = element.closest('tr');
-    // Qty, Unit Price ke inputs (Indices updated)
-    const qtyInput = row.querySelectorAll('input[type="number"]')[0];
-    const unitPriceInput = row.querySelectorAll('input[type="number"]')[2]; // Unit Price ab 3rd number input hai (0: Qty, 1: Weight, 2: Unit Price)
-
-    const qty = parseFloat(qtyInput.value) || 0;
-    const unitPrice = parseFloat(unitPriceInput.value) || 0;
-    
-    let finalAmount = qty * unitPrice; // Simplified: only base amount
-    
-    row.querySelector('.amount').textContent = finalAmount.toFixed(2);
+    // Row calculation logic removed as per request, just recalculate totals
     calculateTotals();
 }
 
@@ -88,32 +98,28 @@ function calculateTotals() {
     let subtotal = 0;
     
     rows.forEach(row => {
-        // Amount jo display ho raha hai (Qty * Unit Price)
-        const amount = parseFloat(row.querySelector('.amount').textContent) || 0;
+        // Amount input box se value leni hai
+        const amountInput = row.querySelector('.amount-input');
+        const amount = parseFloat(amountInput ? amountInput.value : 0) || 0;
         subtotal += amount;
-        
-        // GST logic removed
     });
     
-    // GST calculations removed, setting them to 0
-    const totalGST = 0;
-    const sgst = 0;
-    const cgst = 0;
-
-    // Round Off is applied to the subtotal (New logic: subtotal + SGST + CGST)
-    const totalBeforeRoundOff = subtotal + sgst + cgst; 
-    const roundOff = Math.round(totalBeforeRoundOff) - totalBeforeRoundOff; 
+    // 1. GST Calculation
+    const gstPercent = parseFloat(document.getElementById("gst").value) || 0;
+    const totalGST = subtotal * (gstPercent / 100);
     
-    const finalSubtotal = subtotal; // Already calculated
-    const total = finalSubtotal + sgst + cgst + roundOff; // Sabko jodkar Total
+    // 2. Totals Calculation
+    const grossTotal = subtotal + totalGST;
+    const roundOff = Math.round(grossTotal) - grossTotal; 
+    const total = grossTotal + roundOff; // Final total
     
-    document.getElementById('subtotal').textContent = finalSubtotal.toFixed(2);
-    document.getElementById('sgst').textContent = sgst.toFixed(2);
-    document.getElementById('cgst').textContent = cgst.toFixed(2);
+    // 3. Update DOM
+    document.getElementById('subtotal').textContent = subtotal.toFixed(2);
+    document.getElementById('total-gst').textContent = totalGST.toFixed(2); // New GST span
     document.getElementById('round-off').textContent = roundOff.toFixed(2);
     document.getElementById('total').textContent = total.toFixed(2);
     
-    // Update amount in words
+    // 4. Update amount in words
     document.getElementById('amount-words').textContent = numberToWords(Math.round(total)) + ' Rupees Only';
     
     calculateBalance();
@@ -268,6 +274,7 @@ function resetInvoice() {
         document.getElementById('received').value = '';
         document.getElementById('description').value = "22k Returning 91.6% according to 22k rate\n18k Returning 75% according to 18k rate";
         document.getElementById('terms').value = "Thank you for doing business with us.";
+        document.getElementById('gst').value = '0'; // Reset GST to 0%
         
         // Reset items table - simplified structure
         const tbody = document.querySelector('#items-table tbody');
@@ -282,17 +289,19 @@ function resetInvoice() {
                         <option value="Set">Set</option>
                     </select>
                 </td>
-                <td><input type="number" step="0.01" placeholder="0" onchange="calculateRow(this)"></td>
-                <td><input type="number" step="0.01" placeholder="0.00" onchange="calculateRow(this)"></td>
-                <td>₹<span class="amount">0.00</span></td>
+                <td>
+                    <div class="weight-group">
+                        <input type="number" step="0.01" placeholder="0.00" onchange="calculateRow(this)">
+                        <select onchange="calculateRow(this)">
+                            <option value="gm">gm</option>
+                            <option value="mg">mg</option>
+                        </select>
+                    </div>
+                </td>
+                <td><input type="number" step="0.01" placeholder="0.00" class="amount-input" onchange="calculateRow(this)"></td>
                 <td class="action-column"><button class="remove-btn" onclick="removeItem(this)">Remove</button></td>
             </tr>
         `;
-        
-        // Reset common charges (HTML elements were removed, but keeping a call to clear in case of future changes)
-        // document.getElementById('common-gst').checked = false; // Removed
-        // document.getElementById('common-making').checked = false; // Removed
-        // document.getElementById('common-discount').checked = false; // Removed
         
         // Reset totals
         calculateTotals();
