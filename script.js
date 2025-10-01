@@ -30,13 +30,6 @@ function addItem() {
             <td><input type="text" placeholder="Item" onchange="calculateRow(this)"></td>
             <td><input type="number" value="1" min="1" onchange="calculateRow(this)"></td>
             <td>
-                <select onchange="calculateRow(this)">
-                    <option value="Piece">Piece</option>
-                    <option value="Pair">Pair</option>
-                    <option value="Set">Set</option>
-                </select>
-            </td>
-            <td>
                 <div class="weight-group">
                     <input type="number" step="0.01" placeholder="0.00" onchange="calculateRow(this)">
                     <select onchange="calculateRow(this)">
@@ -45,6 +38,7 @@ function addItem() {
                     </select>
                 </div>
             </td>
+            <td><input type="number" step="0.01" placeholder="0.00" class="rate-input" onchange="calculateRow(this)"></td>
             <td><input type="number" step="0.01" placeholder="0.00" class="amount-input" onchange="calculateRow(this)"></td>
             <td class="action-column"><button class="remove-btn" onclick="removeItem(this)">Remove</button></td>
         `;
@@ -58,6 +52,8 @@ function addItem() {
         } else if (input.type === 'number') {
             if (input.classList.contains('amount-input')) {
                 input.value = ''; // Amount input clear
+            } else if (input.classList.contains('rate-input')) {
+                input.value = ''; // Rate input clear
             } else if (input.min === '1') {
                 input.value = '1'; // Qty input
             } else {
@@ -87,7 +83,30 @@ function removeItem(btn) {
 // toggleCharge() function removed as charges are removed
 
 function calculateRow(element) {
-    // Row calculation logic removed as per request, just recalculate totals
+    const row = element.closest('tr');
+    const qty = parseFloat(row.querySelector('td:nth-child(2) input').value) || 0;
+    
+    // Weight calculation
+    const weightInput = row.querySelector('.weight-group input[type="number"]');
+    const unitSelect = row.querySelector('.weight-group select');
+    const rateInput = row.querySelector('.rate-input');
+    const amountInput = row.querySelector('.amount-input');
+    
+    let weight = parseFloat(weightInput.value) || 0;
+    const unit = unitSelect.value;
+    const rate = parseFloat(rateInput.value) || 0;
+    
+    let weightInGm = weight;
+    if (unit === 'mg') {
+        weightInGm /= 1000; // Convert mg to gm
+    }
+    
+    // Formula: Amount = Qty * Rate * (Weight in gm / 10)
+    const newAmount = qty * rate * (weightInGm / 10);
+    
+    // Update Amount field
+    amountInput.value = newAmount.toFixed(2);
+    
     calculateTotals();
 }
 
@@ -283,13 +302,6 @@ function resetInvoice() {
                 <td><input type="text" placeholder="Item" onchange="calculateRow(this)"></td>
                 <td><input type="number" value="1" min="1" onchange="calculateRow(this)"></td>
                 <td>
-                    <select onchange="calculateRow(this)">
-                        <option value="Piece">Piece</option>
-                        <option value="Pair">Pair</option>
-                        <option value="Set">Set</option>
-                    </select>
-                </td>
-                <td>
                     <div class="weight-group">
                         <input type="number" step="0.01" placeholder="0.00" onchange="calculateRow(this)">
                         <select onchange="calculateRow(this)">
@@ -298,6 +310,7 @@ function resetInvoice() {
                         </select>
                     </div>
                 </td>
+                <td><input type="number" step="0.01" placeholder="0.00" class="rate-input" onchange="calculateRow(this)"></td>
                 <td><input type="number" step="0.01" placeholder="0.00" class="amount-input" onchange="calculateRow(this)"></td>
                 <td class="action-column"><button class="remove-btn" onclick="removeItem(this)">Remove</button></td>
             </tr>
