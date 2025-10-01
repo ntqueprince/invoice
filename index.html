@@ -1,151 +1,190 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hi">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sakshi Jewellers - Invoice Generator</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sakshi Jewellers - Invoice Generator</title>
+    <link rel="stylesheet" href="style.css"> 
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
 <body>
-  <div class="watermark" id="watermark"></div>
-
-  <div class="container">
-    <!-- ================= HEADER ================= -->
-    <div class="header">
-      <h1>💎 Sakshi Jewellers</h1>
-      <p class="tagline">100% शुद्धता की गारंटी</p>
+    <div class="watermark">
+        <div>Sakshi Jewellers</div>
+        <div>Sakshi Jewellers</div>
+        <div>Sakshi Jewellers</div>
+        <div>Sakshi Jewellers</div>
+        <div>Sakshi Jewellers</div>
+        <div>Sakshi Jewellers</div>
     </div>
 
-    <!-- ================= BUSINESS INFO ================= -->
-    <div class="invoice-container">
-      <div class="invoice-header">
-        <div class="business-info">
-          <h2>Tax Invoice</h2>
-          <div class="business-details">
-            <div>Address: West from masjid Islampur, Mohni Sakrauli(Nanpur), Sitamarhi Bihar</div>
-            <div>Phone: 8298801698</div>
-            <div>Email: Ntqe.abhi99@gmail.com</div>
-            <div>GSTIN: 10EGNPK5303M1ZE</div>
-            <div>Proprietor: Nirmal Kr Chaudhary</div>
-          </div>
+    <div class="container" id="invoice-container">
+        <div class="header">
+            <h1>⚜️ Sakshi Jewellers</h1>
+            <div class="tagline">100% शुद्धता की गारंटी</div>
         </div>
 
-        <div class="invoice-meta">
-          <div class="form-group">
-            <label>Invoice No</label>
-            <input type="text" id="invoiceNo" value="25-26-1">
-          </div>
-          <div class="form-group">
-            <label>Date</label>
-            <input type="date" id="invoiceDate">
-          </div>
-          <div class="form-group">
-            <label>Time</label>
-            <input type="time" id="invoiceTime">
-          </div>
+        <div class="invoice-details">
+            <div class="details-grid">
+                <div class="detail-item">
+                    <span class="detail-icon">📍</span>
+                    <div>
+                        <strong>Address:</strong> West from masjid Islampur, Mohni Sakrauli(Nanpur), Sitamarhi Bihar
+                    </div>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-icon">📞</span>
+                    <div>
+                        <strong>Phone:</strong> 8298801698
+                    </div>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-icon">📧</span>
+                    <div>
+                        <strong>Email:</strong> Ntqe.abhi99@gmail.com
+                    </div>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-icon">🏢</span>
+                    <div>
+                        <strong>GSTIN:</strong> 10EGNPK5303MTZE
+                    </div>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-icon">👤</span>
+                    <div>
+                        <strong>Proprietor:</strong> Nirmal Kr Chaudhary
+                    </div>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-icon">🗺️</span>
+                    <div>
+                        <strong>State:</strong> 10-Bihar
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
 
-      <!-- ================= CUSTOMER SECTION ================= -->
-      <div class="customer-section">
-        <h3>📑 Bill To</h3>
-        <div class="invoice-meta">
-          <div class="form-group">
-            <label>Customer Name</label>
-            <input type="text" placeholder="Enter customer name">
-          </div>
-          <div class="form-group">
-            <label>Address</label>
-            <input type="text" placeholder="Enter address">
-          </div>
-          <div class="form-group">
-            <label>Phone</label>
-            <input type="text" placeholder="Enter phone number">
-          </div>
+        <div class="main-content">
+            <div class="invoice-meta">
+                <div class="meta-group">
+                    <label>Invoice No.</label>
+                    <input type="text" id="invoice-no" value="25-26-01" readonly>
+                </div>
+                <div class="meta-group">
+                    <label>Date</label>
+                    <input type="date" id="invoice-date">
+                </div>
+                <div class="meta-group">
+                    <label>Time</label>
+                    <input type="time" id="invoice-time">
+                </div>
+            </div>
+
+            <div class="customer-section">
+                <h3>📋 Bill To</h3>
+                <div class="customer-grid">
+                    <div class="meta-group">
+                        <label>Customer Name</label>
+                        <input type="text" id="customer-name" placeholder="Enter customer name">
+                    </div>
+                    <div class="meta-group">
+                        <label>Address</label>
+                        <input type="text" id="customer-address" placeholder="Enter address">
+                    </div>
+                    <div class="meta-group">
+                        <label>Phone</label>
+                        <input type="text" id="customer-phone" placeholder="Enter phone number">
+                    </div>
+                </div>
+            </div>
+
+            <div class="items-section">
+                <div class="items-header">
+                    <h3>💎 Items</h3>
+                    <button class="add-item-btn" onclick="addItem()">
+                        ➕ Add Item
+                    </button>
+                </div>
+                
+                <table class="items-table" id="items-table">
+                    <thead>
+                        <tr>
+                            <th>Item Name</th>
+                            <th>Qty</th>
+                            <th>Unit</th>
+                            <th>Weight</th>
+                            <th>Unit Price (₹)</th>
+                            <th>Amount (₹)</th>
+                            <th class="action-column">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><input type="text" placeholder="Item" onchange="calculateRow(this)"></td>
+                            <td><input type="number" value="1" min="1" onchange="calculateRow(this)"></td>
+                            <td>
+                                <select onchange="calculateRow(this)">
+                                    <option value="Piece">Piece</option>
+                                    <option value="Pair">Pair</option>
+                                    <option value="Set">Set</option>
+                                </select>
+                            </td>
+                            <td><input type="number" step="0.01" placeholder="0" onchange="calculateRow(this)"></td>
+                            <td><input type="number" step="0.01" placeholder="0.00" onchange="calculateRow(this)"></td>
+                            <td>₹<span class="amount">0.00</span></td>
+                            <td class="action-column"><button class="remove-btn" onclick="removeItem(this)">Remove</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="totals-section">
+                <div class="totals-grid">
+                    <div class="amount-in-words">
+                        <h4>Amount in Words:</h4>
+                        <div id="amount-words">Zero Rupees Only</div>
+                    </div>
+                    <div>
+                        <table class="totals-table">
+                            <tr><span>Subtotal:</span><span>₹<span id="subtotal">0.00</span></span></tr>
+                            <tr><span>Round Off:</span><span>₹<span id="round-off">0.00</span></span></tr>
+                            <tr><span>Total:</span><span>₹<span id="total">0.00</span></span></tr>
+                            <tr style="margin-top: 10px;"><span>Received:</span><span><input type="number" id="received" step="0.01" placeholder="0.00" onchange="calculateBalance()" style="width: 100px; text-align: right;"></span></tr>
+                            <tr><span>Balance:</span><span>₹<span id="balance">0.00</span></span></tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="description-terms-vertical">
+                <div class="vertical-item">
+                    <h4 style="margin-bottom: 10px; color: #8B4513;">Terms & Conditions</h4>
+                    <textarea id="terms" placeholder="Thank you for doing business with us."></textarea>
+                </div>
+                <div class="vertical-item">
+                    <h4 style="margin-bottom: 10px; color: #8B4513;">Description</h4>
+                    <textarea id="description" placeholder="22k Returning 91.6% according to 22k rate&#10; and 18k Returning 75% according to 18k rate"></textarea>
+                </div>
+            </div>
+
+            <div class="actions">
+                <button class="action-btn generate-btn" onclick="generateInvoice()">
+                    📄 Generate Invoice
+                </button>
+                <button class="action-btn print-btn" onclick="printInvoice()">
+                    🖨️ Print / Save PDF
+                </button>
+                <button class="action-btn pdf-btn" onclick="downloadPDF()">
+                    ⚡ Download PDF
+                </button>
+                <button class="action-btn reset-btn" onclick="resetInvoice()">
+                    🔄 Reset
+                </button>
+            </div>
         </div>
-      </div>
-
-      <!-- ================= ITEMS ================= -->
-      <div class="items-section">
-        <h3>💎 Items</h3>
-        <table class="items-table">
-          <thead>
-            <tr>
-              <th>Item Name</th>
-              <th>Qty</th>
-              <th>Unit</th>
-              <th>Weight</th>
-              <th> Price (₹)</th>
-              <th class="no-print">Additional Charges</th>
-              <th>Amount (₹)</th>
-            </tr>
-          </thead>
-          <tbody id="itemsBody">
-            <!-- Rows dynamically added by JS -->
-          </tbody>
-        </table>
-        <button class="btn btn-primary no-print" onclick="addItem()">➕ Add Item</button>
-      </div>
-
-      <!-- ================= COMMON CHARGES ================= -->
-      <div class="common-charges no-print">
-        <label><input type="checkbox" id="applyCommon"> Apply Common Charges to All Items</label><br>
-        GST %: <input type="number" id="commonGst" value="3">
-        Making %: <input type="number" id="commonMaking" value="10">
-        Discount %: <input type="number" id="commonDiscount" value="5">
-      </div>
-
-      <!-- ================= TOTALS ================= -->
-      <div class="totals-section">
-        <div class="totals-grid">
-          <div class="total-label">Subtotal:</div>
-          <div class="total-value" id="subtotal">₹0.00</div>
-          <div class="total-label">SGST:</div>
-          <div class="total-value" id="sgst">₹0.00</div>
-          <div class="total-label">CGST:</div>
-          <div class="total-value" id="cgst">₹0.00</div>
-          <div class="total-label">Round Off:</div>
-          <div class="total-value" id="roundOff">₹0.00</div>
-          <div class="total-label final-total">Total:</div>
-          <div class="total-value final-total" id="grandTotal">₹0.00</div>
-          <div class="total-label">Received:</div>
-          <div class="total-value"><input type="number" id="receivedAmount" value="0" oninput="calculateBalance()"></div>
-          <div class="total-label">Balance:</div>
-          <div class="total-value" id="balance">₹0.00</div>
-        </div>
-      </div>
-
-      <!-- ================= AMOUNT IN WORDS ================= -->
-      <div class="amount-words" id="amountWords">Amount in Words: Zero Rupees Only</div>
-
-      <!-- ================= DESCRIPTION ================= -->
-      <div class="description-terms">
-        <div class="form-group">
-          <label>Description</label>
-          <textarea rows="3">22k Returning 91.6% according to 22k rate returning
-18k Returning 75% according to 18k rate returning</textarea>
-        </div>
-        <div class="form-group">
-          <label>Terms & Conditions</label>
-          <textarea rows="3">Thank you for doing business with us.</textarea>
-        </div>
-      </div>
-
-      <!-- ================= ACTIONS ================= -->
-      <div class="actions no-print">
-        <button class="btn btn-success" onclick="generateInvoice()">📄 Generate Invoice</button>
-        <button class="btn btn-primary" onclick="printInvoice()">🖨️ Print / Save PDF</button>
-        <button class="btn btn-danger" onclick="resetInvoice()">🔄 Reset</button>
-            <button class="btn btn-primary" onclick="downloadPDF()">⬇️ Download PDF</button>
-      </div>
     </div>
-  </div>
 
-  <script src="script.js"></script>
+    <script src="script.js"></script>
 </body>
-<!-- jsPDF for PDF -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-
-<!-- html2canvas for screenshot -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </html>
