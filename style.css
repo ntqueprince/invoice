@@ -5,715 +5,515 @@
 }
 
 body {
-    font-family: 'Arial', sans-serif;
-    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-    min-height: 100vh;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #f5f5dc 0%, #fff8dc 100%);
     padding: 20px;
+    min-height: 100vh;
     position: relative;
+    overflow-x: hidden;
 }
 
-.watermark {
+body::before {
+    content: 'Sakshi Jewellers';
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-45deg);
+    font-size: 120px;
+    font-weight: bold;
+    color: rgba(184, 134, 11, 0.03);
+    white-space: nowrap;
+    pointer-events: none;
+    z-index: 0;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.02);
+}
+
+body::after {
+    content: 'Sakshi Jewellers Sakshi Jewellers Sakshi Jewellers Sakshi Jewellers Sakshi Jewellers Sakshi Jewellers Sakshi Jewellers Sakshi Jewellers';
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: -1;
-    opacity: 0.05;
-    font-size: 4rem;
+    width: 200%;
+    height: 200%;
+    font-size: 80px;
     font-weight: bold;
-    transform: rotate(-45deg);
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-around;
-    color: #8B4513;
+    color: rgba(184, 134, 11, 0.02);
+    word-wrap: break-word;
+    pointer-events: none;
+    z-index: 0;
+    line-height: 2;
+    transform: rotate(-30deg);
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.01);
 }
 
 .container {
-    max-width: 900px;
+    max-width: 1400px;
     margin: 0 auto;
-    background: white;
-    border-radius: 15px;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-    overflow: hidden;
-}
-
-/* --- HEADER STYLES --- */
-.header {
-    background: linear-gradient(135deg, #D2691E 0%, #8B4513 100%);
-    color: white;
-    text-align: center;
-    padding: 15px;
     position: relative;
-    /* Added space at the bottom for the new meta details */
-    padding-bottom: 50px; 
+    z-index: 1;
 }
 
-.header h1 {
-    font-size: 1.5rem;
-    margin-bottom: 5px;
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.3); 
+h1 {
+    text-align: center;
+    background: linear-gradient(135deg, #b8860b 0%, #daa520 50%, #b8860b 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-size: 48px;
+    margin-bottom: 35px;
+    text-shadow: 2px 2px 4px rgba(184, 134, 11, 0.3);
+    font-weight: 800;
+    letter-spacing: 3px;
+    font-family: 'Georgia', serif;
+    text-transform: uppercase;
+    position: relative;
+    padding: 20px 0;
 }
 
-.header .tagline {
-    font-size: 0.9rem;
-    opacity: 0.9;
-}
-
-/* ✅ NEW: Styles for Invoice No. and Date inside header */
-.invoice-header-meta {
+h1::before {
+    content: '✨';
     position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    display: flex;
-    justify-content: space-between;
-    padding: 0 15px 8px 15px; /* Padding for visual separation */
-    font-size: 0.9rem;
+    left: 20%;
+    font-size: 32px;
+    animation: sparkle 2s infinite;
 }
 
-.invoice-header-meta .meta-item {
-    display: flex;
-    align-items: center;
-    gap: 5px;
+h1::after {
+    content: '✨';
+    position: absolute;
+    right: 20%;
+    font-size: 32px;
+    animation: sparkle 2s infinite 1s;
 }
 
-.invoice-header-meta .meta-item strong {
-    font-weight: bold;
-    color: #ffd700; /* Gold color for labels */
+@keyframes sparkle {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(1.2); }
 }
 
-/* Input styles within the header for Invoice No. and Date */
-.invoice-header-meta input {
-    background: none;
-    border: none;
-    color: white;
-    font-size: 0.9rem;
-    padding: 0;
-    width: auto;
-    font-weight: bold;
-    text-align: right; /* Date ko right align karne ke liye */
+.admin-panel {
+    background: linear-gradient(135deg, #fff9e6 0%, #ffe4b5 100%);
+    padding: 35px;
+    border-radius: 15px;
+    box-shadow: 0 6px 20px rgba(184, 134, 11, 0.2);
+    margin-bottom: 30px;
+    border: 2px solid #f0e68c;
 }
 
-.invoice-header-meta .left input {
-    text-align: left;
-}
-/* ----------------------------------------------------- */
-
-/* --- INVOICE DETAILS --- */
-.invoice-details {
-    background: #8B4513;
-    color: white;
-    padding: 10px;
-}
-
-.details-grid {
+.form-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 10px;
-}
-
-.detail-item {
-    background: rgba(255,255,255,0.1);
-    padding: 6px;
-    border-radius: 6px;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    font-size: 0.9rem;
-}
-
-.detail-icon {
-    font-size: 1rem;
-}
-
-.main-content {
-    padding: 20px;
-}
-
-/* ❌ REMOVED: .invoice-meta (it was for the old Invoice No/Date/Time section) */
-
-.customer-section {
-    background: #f8f9fa;
-    padding: 20px;
-    border-radius: 10px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
     margin-bottom: 30px;
 }
 
-.customer-section h3 {
-    color: #8B4513;
-    margin-bottom: 15px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-/* ✅ UPDATED: To 3 columns for better fit with more fields */
-.customer-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 15px;
-}
-
-.meta-group {
+.form-group {
     display: flex;
     flex-direction: column;
-    gap: 8px;
 }
 
-.meta-group label {
-    font-weight: bold;
-    color: #8B4513;
+.form-group label {
+    font-weight: 700;
+    color: #8b6914;
+    margin-bottom: 8px;
+    font-size: 15px;
 }
 
-.meta-group input {
-    padding: 10px;
-    border: 2px solid #ddd;
-    border-radius: 6px;
-    font-size: 1rem;
+.form-group input,
+.form-group textarea,
+.form-group select {
+    padding: 12px 14px;
+    border: 2px solid #e8d7a0;
+    border-radius: 8px;
+    font-size: 15px;
+    transition: all 0.3s;
+    background: white;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: #b8860b;
+    box-shadow: 0 0 0 3px rgba(184, 134, 11, 0.1);
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 80px;
+    font-family: inherit;
+}
+
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.checkbox-group input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    margin-right: 8px;
+    cursor: pointer;
+}
+
+.discount-input-group {
+    display: flex;
+    gap: 10px;
+    align-items: flex-end;
+}
+
+.discount-input-group input {
+    flex: 1;
+}
+
+.discount-input-group select {
+    width: 100px;
 }
 
 .items-section {
+    background: linear-gradient(135deg, #fff9e6 0%, #ffe4b5 100%);
+    padding: 35px;
+    border-radius: 15px;
+    box-shadow: 0 6px 20px rgba(184, 134, 11, 0.2);
     margin-bottom: 30px;
+    border: 2px solid #f0e68c;
 }
 
-.items-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 15px;
-}
-
-.items-header h3 {
-    color: #8B4513;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.add-item-btn {
-    background: linear-gradient(135deg, #28a745, #20c997);
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 25px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: all 0.3s ease;
-}
-
-.add-item-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(40, 167, 69, 0.4);
+.items-section h3 {
+    color: #8b6914;
+    margin-bottom: 20px;
+    font-size: 22px;
+    font-weight: 700;
 }
 
 .items-table {
     width: 100%;
     border-collapse: collapse;
-    background: white;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
 }
 
 .items-table th {
-    background: linear-gradient(135deg, #8B4513, #D2691E);
-    color: white;
-    padding: 15px 8px;
-    font-weight: bold;
-    text-align: center;
-    font-size: 0.9rem;
+    background: #f5f5dc;
+    padding: 14px;
+    text-align: left;
+    font-weight: 700;
+    color: #8b6914;
+    border: 1px solid #ddd;
+    font-size: 15px;
 }
 
 .items-table td {
-    padding: 12px 8px;
-    border-bottom: 1px solid #eee;
-    text-align: center;
+    padding: 12px;
+    border: 1px solid #ddd;
+    font-size: 15px;
 }
 
-.items-table input, .items-table select {
+.items-table input {
+    width: 100%;
     padding: 8px;
-    border: 1px solid #ddd;
+    border: 1px solid #e8d7a0;
     border-radius: 4px;
+    font-size: 15px;
+}
+
+.items-table td:first-child {
     text-align: center;
+    width: 40px;
 }
 
-/* --- STYLES FOR ITEMS TABLE INPUTS --- */
-.items-table td input[type="number"], .items-table td input[type="text"] {
-    width: 100%;
-}
-
-.weight-group {
-    display: flex;
-    gap: 5px;
-    align-items: center;
-}
-
-.weight-group input[type="number"] {
-    width: 60%; 
-    flex-grow: 1; 
-}
-
-.weight-group select {
-    width: 40%; 
-}
-/* -------------------------------------- */
-
-
-.remove-btn {
-    background: #dc3545;
-    color: white;
+.btn {
+    padding: 10px 24px;
     border: none;
-    padding: 5px 10px;
-    border-radius: 4px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
     cursor: pointer;
-    font-size: 0.8rem;
+    transition: all 0.3s;
+    margin-right: 10px;
 }
 
-.totals-section {
-    background: #f8f9fa;
-    padding: 20px;
-    border-radius: 10px;
-    margin-bottom: 30px;
+.btn-add {
+    background: #b8860b;
+    color: white;
 }
 
-.totals-grid {
-    display: grid;
-    grid-template-columns: 1fr 300px;
-    gap: 20px;
+.btn-add:hover {
+    background: #9a7209;
 }
 
-.amount-in-words {
-    background: #e3f2fd;
-    padding: 15px;
-    border-radius: 8px;
-    border-left: 4px solid #2196f3;
+.btn-clear {
+    background: #b8860b;
+    color: white;
 }
 
-/* --- STYLES FOR TOTALS BOX --- */
-.totals-box {
+.btn-clear:hover {
+    background: #9a7209;
+}
+
+.btn-download {
+    background: #28a745;
+    color: white;
+    padding: 12px 30px;
+    font-size: 16px;
+}
+
+.btn-download:hover {
+    background: #218838;
+}
+
+.invoice-preview {
     background: white;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 15px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    padding: 50px;
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+    margin-bottom: 30px;
+    position: relative;
+    border: 1px solid #e8e8e8;
 }
 
-.totals-table {
-    width: 100%;
+.invoice-watermark {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-45deg);
+    font-size: 100px;
+    font-weight: bold;
+    color: rgba(184, 134, 11, 0.04);
+    white-space: nowrap;
+    pointer-events: none;
+    z-index: 0;
+    user-select: none;
 }
 
-.totals-table tr {
+.invoice-content {
+    position: relative;
+    z-index: 1;
+}
+
+.invoice-header {
     display: flex;
     justify-content: space-between;
-    padding: 8px 0;
-    border-bottom: 1px dashed #ddd;
+    align-items: flex-start;
+    margin-bottom: 30px;
+    padding-bottom: 25px;
+    border-bottom: 4px double #b8860b;
 }
 
-.totals-table tr:last-child {
-    border-bottom: none;
+.shop-info {
+    flex: 1;
 }
 
-.totals-table td:first-child {
+.shop-info h2 {
+    color: #b8860b;
+    font-size: 36px;
+    margin-bottom: 12px;
+    letter-spacing: 2px;
+    font-weight: 700;
+    text-align: center;
+    font-family: 'Georgia', serif;
+}
+
+.shop-info p {
+    color: #666;
+    font-size: 14px;
+    line-height: 1.8;
+    font-weight: 500;
+}
+
+.invoice-meta {
+    text-align: right;
+    background: linear-gradient(135deg, #fff8dc 0%, #f5f5dc 100%);
+    padding: 20px 25px;
+    border-radius: 8px;
+    border: 2px solid #b8860b;
+}
+
+.invoice-meta h3 {
+    color: #b8860b;
+    font-size: 24px;
+    margin-bottom: 15px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.invoice-meta p {
+    color: #333;
+    font-size: 14px;
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+.customer-details {
+    background: linear-gradient(135deg, #fffaf0 0%, #fff8dc 100%);
+    padding: 25px;
+    border-radius: 10px;
+    margin-bottom: 35px;
+    border-left: 5px solid #b8860b;
+    box-shadow: 0 2px 10px rgba(184, 134, 11, 0.1);
+}
+
+.customer-details h4 {
+    color: #b8860b;
+    margin-bottom: 15px;
+    font-size: 18px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.customer-details p {
+    color: #333;
+    font-size: 14px;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.invoice-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 35px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+}
+
+.invoice-table th {
+    background: linear-gradient(135deg, #b8860b 0%, #9a7209 100%);
+    color: white;
+    padding: 15px 12px;
     text-align: left;
-    font-weight: normal;
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
-.totals-table td:last-child {
-    text-align: right;
-    font-weight: bold;
+.invoice-table td {
+    padding: 12px;
+    border: 1px solid #e0e0e0;
+    font-size: 13px;
+    color: #333;
+    font-weight: 500;
 }
 
-.received-row td:last-child input {
-    width: 100px; 
-    text-align: right;
-    border: 1px solid #ccc;
-    padding: 5px;
+.invoice-table tbody tr:nth-child(even) {
+    background: #fafafa;
+}
+
+.invoice-table tbody tr:hover {
+    background: #f5f5dc;
+}
+
+.invoice-totals {
+    float: right;
+    width: 400px;
+    margin-bottom: 35px;
+    background: linear-gradient(135deg, #fff8dc 0%, #fffaf0 100%);
+    padding: 20px;
+    border-radius: 10px;
+    border: 2px solid #b8860b;
+    box-shadow: 0 4px 15px rgba(184, 134, 11, 0.15);
 }
 
 .total-row {
-    font-weight: bold;
-    font-size: 1.1rem;
-    color: #8B4513;
-    border-bottom: 2px solid #8B4513 !important;
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    font-size: 15px;
+    font-weight: 600;
+    color: #333;
+    border-bottom: 1px dashed #ddd;
+}
+
+.total-row:last-child {
+    border-bottom: none;
+}
+
+.total-row.grand {
+    border-top: 3px double #b8860b;
+    font-weight: 700;
+    font-size: 18px;
+    color: #b8860b;
+    padding-top: 15px;
     margin-top: 10px;
-    padding-top: 10px !important;
+    border-bottom: none;
 }
 
-.balance-row {
-    font-weight: bold;
-    font-size: 1.2rem;
-    color: #28a745;
-    margin-top: 5px;
-    padding-top: 10px !important;
+.terms {
+    clear: both;
+    background: linear-gradient(135deg, #fffaf0 0%, #fff8dc 100%);
+    padding: 25px;
+    border-radius: 10px;
+    margin-bottom: 35px;
+    border: 2px solid #f0e68c;
+    box-shadow: 0 2px 10px rgba(184, 134, 11, 0.1);
 }
 
-/* GST Selector Styling */
-.gst-selector {
-    margin-top: 15px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
+.terms h4 {
+    color: #b8860b;
+    margin-bottom: 15px;
+    font-size: 18px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
-.gst-selector label {
-    font-weight: bold;
-    color: #007bff;
+.terms ul {
+    list-style-position: inside;
+    color: #333;
+    font-size: 14px;
+    line-height: 2;
+    font-weight: 500;
 }
 
-.gst-selector select {
-    padding: 8px;
-    border: 2px solid #007bff;
-    border-radius: 6px;
-    font-size: 1rem;
-    cursor: pointer;
+.signature {
+    text-align: right;
+    margin-top: 60px;
+    padding-top: 20px;
+    border-top: 2px solid #e8e8e8;
 }
-/* ----------------------------------- */
 
+.signature p {
+    color: #333;
+    font-size: 15px;
+    margin-bottom: 8px;
+    font-weight: 600;
+}
 
-/* --- DESCRIPTION AND TERMS SECTION --- */
-.description-terms-vertical {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+.signature .sign-line {
+    font-weight: 700;
+    color: #b8860b;
+    font-size: 16px;
+    margin-top: 50px;
+}
+
+.download-section {
+    text-align: center;
     margin-bottom: 30px;
 }
 
-.description-terms-vertical .vertical-item {
-    width: 100%;
-}
-
-.description-terms-vertical textarea {
-    width: 100%;
-    height: 120px;
-    padding: 12px;
-    border: 2px solid #ddd;
-    border-radius: 8px;
-    resize: vertical;
-    font-family: inherit;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-    line-height: 1.4;
-}
-/* ------------------------------------------- */
-
-.actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
-    justify-content: center;
-}
-
-.action-btn {
-    padding: 12px 25px;
-    border: none;
-    border-radius: 25px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.generate-btn {
-    background: linear-gradient(135deg, #28a745, #20c997);
-    color: white;
-}
-
-.print-btn {
-    background: linear-gradient(135deg, #ffc107, #fd7e14);
-    color: white;
-}
-
-.pdf-btn {
-    background: linear-gradient(135deg, #007bff, #6610f2);
-    color: white;
-}
-
-.reset-btn {
-    background: linear-gradient(135deg, #dc3545, #e83e8c);
-    color: white;
-}
-
-.action-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-}
-
-/* Modal styles (kept for reference, though discount modal removed) */
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0,0,0,0.5);
-}
-
-.modal-content {
-    background-color: white;
-    margin: 15% auto;
-    padding: 20px;
-    border-radius: 10px;
-    width: 300px;
-    text-align: center;
-}
-
-.modal-buttons {
-    display: flex;
-    gap: 10px;
-    justify-content: center;
-    margin-top: 20px;
-}
-
-.modal-btn {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.modal-btn.primary {
-    background: #007bff;
-    color: white;
-}
-
-.modal-btn.secondary {
-    background: #6c757d;
-    color: white;
-}
-
-/* Print Styles */
 @media print {
     body {
         background: white;
         padding: 0;
     }
-    .container {
-        box-shadow: none;
-        border-radius: 0;
-    }
-    .actions {
+    body::before,
+    body::after {
         display: none;
     }
-    .watermark {
-        opacity: 0.03;
+    .admin-panel,
+    .items-section,
+    .download-section,
+    h1 {
+        display: none !important;
     }
-
-    /* Print ke liye header aur details ko aur chhota karein */
-    .header {
-        padding-bottom: 40px; /* Reduced padding for print */
-    }
-
-    .header h1 {
-        font-size: 1.3rem;
-    }
-    .header .tagline {
-        font-size: 0.8rem;
-    }
-    
-    /* ✅ NEW: Print styles for header meta */
-    .invoice-header-meta {
-        padding-bottom: 5px;
-    }
-    .invoice-header-meta input {
-        /* Important for forcing white text in print/PDF */
-        color: white !important;
-        -webkit-print-color-adjust: exact;
-        color-adjust: exact;
-    }
-    /* ------------------------------------- */
-
-    .detail-item {
-        font-size: 0.8rem;
-        padding: 4px;
-    }
-    .invoice-details {
-        padding: 8px;
-    }
-    .main-content {
-        padding: 15px;
-    }
-    
-    /* PDF/Print ke liye text wrapping theek karein */
-    .description-terms-vertical textarea {
-        font-size: 11px;
-        line-height: 1.2;
-        white-space: pre-wrap;
-    }
-    /* Print mein weight input aur select ko thoda adjust karein */
-    .weight-group {
-        display: block;
-    }
-    .weight-group input[type="number"], .weight-group select {
-        width: 100%;
-        box-sizing: border-box;
-    }
-    /* Print mein totals table ko clean rakhein */
-    .totals-box {
-        border: none;
+    .invoice-preview {
         box-shadow: none;
-        padding: 0;
-    }
-    .totals-table tr {
-        border-bottom: 1px solid #ddd !important;
-    }
-    .total-row {
-        border-bottom: 2px solid #000 !important; /* Black border for print */
-        color: #000 !important;
-    }
-    .balance-row {
-        color: #000 !important;
-    }
-    .gst-selector {
-        display: none; /* GST selector print mein nahi chahiye */
-    }
-
-    /* Print mein table ko compact rakhein */
-    .items-table {
-        font-size: 11px;
-    }
-
-    .items-table th,
-    .items-table td {
-        padding: 3px 5px;
-    }
-
-    .items-table input,
-    .items-table select {
-        font-size: 11px;
-        padding: 2px;
-        height: auto;
+        padding: 20px;
     }
 }
 
-/* PDF Styles */
-.pdf-content {
-    page-break-inside: avoid;
-}
-
-.items-table tr {
-    page-break-inside: avoid;
-}
-
-.totals-section {
-    page-break-inside: avoid;
-}
-
-.description-terms-vertical {
-    page-break-inside: avoid;
-}
-
-/* Responsive Styles */
-@media (max-width: 768px) {
-    .details-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .customer-grid {
-        grid-template-columns: 1fr; /* On small screens, stack all fields */
-    }
-    
-    .totals-grid {
-        grid-template-columns: 1fr;
-    }
-
-    /* Header meta ko stacked karo on small screens */
-    .invoice-header-meta {
-        flex-direction: column;
-        align-items: flex-start;
-        padding: 0 15px 5px 15px;
-    }
-    .invoice-header-meta .meta-item {
-        width: 100%;
-        justify-content: space-between;
-    }
-    .invoice-header-meta .meta-item input {
-        text-align: right !important;
-    }
-    
-    .description-terms-vertical {
-        flex-direction: column;
-    }
-    
-    .actions {
-        flex-direction: column;
-    }
-    
-    .items-table {
-        font-size: 0.8rem;
-    }
-    
-    .items-table th, .items-table td {
-        padding: 8px 4px;
-    }
-}
-
-/* Items table column sizing */
-.items-table th:nth-child(1), 
-.items-table td:nth-child(1) {
-    width: 30%;   /* Item Name */
-    text-align: left;
-}
-
-.items-table th:nth-child(2), 
-.items-table td:nth-child(2) {
-    width: 8%;    /* Qty chhota */
-}
-
-.items-table th:nth-child(3), 
-.items-table td:nth-child(3) {
-    width: 20%;   /* Weight thoda bada (input+select ke liye) */
-}
-
-.items-table th:nth-child(4), 
-.items-table td:nth-child(4) {
-    width: 18%;   /* Rate column */
-}
-
-.items-table th:nth-child(5), 
-.items-table td:nth-child(5) {
-    width: 18%;   /* Amount bada */
-    font-weight: bold;
-}
-
-.items-table th:nth-child(6), 
-.items-table td:nth-child(6) {
-    width: 6%;   /* Action column */
-}
-
-
-.page-break-before {
-    page-break-before: always;
-}
-
-/* Chrome, Safari, Edge ke liye */
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-}
-
-/* Firefox ke liye */
-input[type=number] {
-    -moz-appearance: textfield;
-}
-/* Customer Section को छोटा और ऊपर लाने के लिए */
-.compact-customer {
-    margin-top: 15px;   /* ऊपर लाना */
-    padding: 10px;      /* padding कम */
-}
-
-.compact-customer .meta-group label {
-    font-size: 0.85rem; /* label छोटा */
-}
-
-.compact-customer input {
-    padding: 6px 8px;   /* input छोटा */
-    font-size: 0.9rem;
+@page {
+    size: A4;
+    margin: 15mm;
 }
