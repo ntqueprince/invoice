@@ -763,3 +763,32 @@ h1::after {
         padding: 8px 6px;
     }
 }
+.created-by {
+  text-align: center;
+  font-size: 1rem;
+  color: #d4af37; /* premium gold color */
+  font-family: "Playfair Display", serif;
+  font-style: italic;
+  letter-spacing: 0.7px;
+  margin-top: -5px;
+  position: relative;
+  opacity: 0.9;
+}
+
+/* Decorative line below text */
+.created-by::after {
+  content: "";
+  display: block;
+  width: 80px;
+  height: 2px;
+  background: linear-gradient(to right, transparent, #d4af37, transparent);
+  margin: 4px auto 0 auto;
+  border-radius: 10px;
+}
+
+/* Hide from PDF */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+}
