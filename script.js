@@ -213,15 +213,32 @@ for (let i = 0; i < itemsBody.rows.length; i++) {
     if (itemType === 'silver') silverSubtotal += amount;
 }
 
+// ✅ GST calculation — silver par GST optional hai
+// Gold par hamesha GST lagega
+
 // Silver par GST sirf tab lagega jab checkbox checked ho
 let taxableSubtotal = goldSubtotal + (applySilverGst ? silverSubtotal : 0);
 
-// GST only on taxable subtotal
+// GST only on taxable subtotal (gold + optionally silver)
 const cgstAmount = (taxableSubtotal * cgstPercent) / 100;
 const sgstAmount = (taxableSubtotal * sgstPercent) / 100;
 
-// Total including non-GST silver if unchecked
-const subtotalWithGST = subtotal + cgstAmount + sgstAmount;
+// 🟡 Agar checkbox unchecked hai, to silver ke amount par GST nahi lagega
+// par silver amount total me include rahega
+const nonTaxableSilver = applySilverGst ? 0 : silverSubtotal;
+
+// ✅ Final total (gold + silver + applicable GST)
+// ✅ Safe total calculation (works even if GST = 0 or not applied)
+let subtotalWithGST;
+
+if (isNaN(cgstAmount) || isNaN(sgstAmount) || gstPercent === 0) {
+    // Agar GST disable hai, to sirf subtotal hi total hoga
+    subtotalWithGST = subtotal;
+    cgstAmount = 0;
+    sgstAmount = 0;
+} else {
+    subtotalWithGST = taxableSubtotal + nonTaxableSilver + cgstAmount + sgstAmount;
+}
 
 
     // Apply discount AFTER GST
@@ -319,3 +336,14 @@ async function downloadPDF() {
 
 // Add first item by default
 addItem();
+// ✅ Auto-update invoice preview whenever anything changes
+window.addEventListener('load', function () {
+    // Select all input, dropdown (select), and text boxes (textarea)
+    const allFields = document.querySelectorAll('input, select, textarea');
+
+    // Jab bhi koi value badlegi — updatePreview() function chalega
+    allFields.forEach(field => {
+        field.addEventListener('input', updatePreview);  // Type karne par chalega
+        field.addEventListener('change', updatePreview); // Dropdown/checkbox par chalega
+    });
+});
