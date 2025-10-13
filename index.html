@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sakshi Jewellers — Invoice Creator</title>
-    <link rel="stylesheet" href="style.css">
+    <title>💎 Sakshi Jewellers 💍 — Invoice Creator</title>
+    <link rel="stylesheet" href="style.css"> 
 </head>
 <body>
     <div class="container">
@@ -13,8 +13,8 @@
         <div class="admin-panel">
             <div class="form-grid">
                 <div class="form-group">
-                    <label>Shop name</label>
-                    <input type="text" id="shopName" value="Sakshi Jewellers">
+                    <label>Shop Name</label>
+                    <input type="text" id="shopName" value="💎 Sakshi Jewellers 💍">
                 </div>
                 <div class="form-group">
                     <label>Invoice No.</label>
@@ -25,7 +25,7 @@
                     <input type="text" id="customerName" placeholder="Enter customer name">
                 </div>
                 <div class="form-group">
-                    <label>Address</label>
+                    <label>Shop Address</label>
                     <textarea id="shopAddress">West from masjid Islampur,
 Mohni Sakrauli (Nanpur), Sitamarhi
 Bihar</textarea>
@@ -43,6 +43,10 @@ Bihar</textarea>
                     <input type="text" id="gstin" value="10EGNPK5303MTZE">
                 </div>
                 <div class="form-group">
+                    <label>Shop Phone</label>
+                    <input type="text" id="shopPhone" value="8298801698">
+                </div>
+                <div class="form-group">
                     <label>GST % (Total)</label>
                     <input type="number" id="gstPercent" value="3" min="0" max="40" step="0.1">
                 </div>
@@ -50,12 +54,10 @@ Bihar</textarea>
                     <label>Add PAN Card</label>
                     <div class="checkbox-group">
                         <input type="checkbox" id="addPan">
-                        <span>Include PAN</span>
+                        <span>Include PAN in Invoice</span>
                     </div>
-                    <input type="text" id="panNumber" placeholder="Enter PAN" style="margin-top: 10px; display: none;">
+                    <input type="text" id="panNumber" placeholder="Enter PAN Number" style="margin-top: 10px; display: none;">
                 </div>
-            </div>
-            <div class="form-grid">
                 <div class="form-group">
                     <label>Special Discount (After GST)</label>
                     <div class="discount-input-group">
@@ -80,14 +82,14 @@ Bihar</textarea>
                     <textarea id="customerAddress" placeholder="Enter customer address"></textarea>
                 </div>
                 <div class="form-group">
-                    <label>Notes</label>
-                    <textarea id="notes" placeholder="Any extra notes"></textarea>
+                    <label>Additional Notes</label>
+                    <textarea id="notes" placeholder="Any extra notes or special instructions"></textarea>
                 </div>
             </div>
         </div>
 
         <div class="items-section">
-            <h3>Items</h3>
+            <h3>Invoice Items</h3>
             <table class="items-table">
                 <thead>
                     <tr>
@@ -95,7 +97,7 @@ Bihar</textarea>
                         <th>Description</th>
                         <th>Qty</th>
                         <th>Purity</th>
-                        <th>Net Wt</th>
+                        <th>Net Wt (g)</th>
                         <th>Rate (per 10gm)</th>
                         <th>Making</th>
                         <th>Type</th>
@@ -105,37 +107,52 @@ Bihar</textarea>
                 <tbody id="itemsBody">
                 </tbody>
             </table>
-            <button class="btn btn-add" onclick="addItem()">Add Item</button>
-            <button class="btn btn-clear" onclick="clearItems()">Clear Items</button>
+            <button class="btn btn-add" onclick="addItem()">➕ Add Item</button>
+            <button class="btn btn-clear" onclick="clearItems()">🗑️ Clear All Items</button>
         </div>
 
         <div class="download-section">
-            <button class="btn btn-download" onclick="downloadPDF()">Download PDF</button>
+            <button class="btn btn-download" onclick="downloadPDF()">📄 Download PDF Invoice</button>
         </div>
 
         <div class="invoice-preview" id="invoicePreview">
-            <div class="invoice-watermark">Sakshi Jewellers</div>
+            <div class="invoice-watermark">💎 Sakshi Jewellers 💍</div>
             <div class="invoice-content">
-                <div class="invoice-header">
-                    <div class="shop-info">
-                        <h2 id="previewShopName">Sakshi Jewellers</h2>
-                        <p id="previewAddress">West from masjid Islampur,<br>Mohni Sakrauli (Nanpur), Sitamarhi<br>Bihar</p>
-                        <p><strong>GSTIN:</strong> <span id="previewGstin">10EGNPK5303MTZE</span></p>
-                        <p><strong>Phone:</strong> 8298801698</p>
-                    </div>
-                    <div class="invoice-meta">
-                        <h3>Tax Invoice</h3>
-                        <p><strong>Invoice No:</strong> <span id="previewInvoiceNo">-</span></p>
-                        <p><strong>Date:</strong> <span id="previewDate">-</span></p>
-                    </div>
+                <div class="main-title">
+                    <h1>💎 Sakshi Jewellers 💍</h1>
                 </div>
 
-                <div class="customer-details">
-                    <h4>Customer Details</h4>
-                    <p><strong>Name:</strong> <span id="previewCustomerName">-</span></p>
-                    <p><strong>Phone:</strong> <span id="previewCustomerPhone">-</span></p>
-                    <p id="previewPanRow" style="display: none;"><strong>PAN:</strong> <span id="previewPan">-</span></p>
-                    <p><strong>Address:</strong> <span id="previewCustomerAddress">-</span></p>
+                <div class="invoice-header">
+                    <div class="shop-info">
+
+                        <div class="shop-details">
+                            <h3 id="previewShopName">🏪 🏪 Shop Details</h3>
+                            <p id="previewAddress">West from masjid Islampur,<br>Mohni Sakrauli (Nanpur), Sitamarhi<br>Bihar</p>
+                            <p><strong>GSTIN:</strong> <span id="previewGstin">10EGNPK5303MTZE</span></p>
+                            <p><strong>Phone:</strong> <span id="previewShopPhone">8298801698</span></p>
+                        </div>
+                        <div class="bank-details">
+                            <h4>Pay To:</h4>
+                            <p><strong>Bank Name:</strong> Punjab National Bank, Mohani (Mahuagachhi)</p>
+                            <p><strong>Account No.:</strong> 1779002100003723</p>
+                            <p><strong>IFSC Code:</strong> PUNB0177900</p>
+                            <p><strong>Account Holder:</strong> Sakshi Jewellers</p>
+                        </div>
+                    </div>
+                    <div class="right-section">
+                        <div class="invoice-meta">
+                            <h3>Tax Invoice</h3>
+                            <p><strong>Invoice No:</strong> <span id="previewInvoiceNo">-</span></p>
+                            <p><strong>Date:</strong> <span id="previewDate">-</span></p>
+                        </div>
+                        <div class="customer-details">
+                            <h4>Customer Details</h4>
+                            <p><strong>Name:</strong> <span id="previewCustomerName">-</span></p>
+                            <p><strong>Phone:</strong> <span id="previewCustomerPhone">-</span></p>
+                            <p id="previewPanRow" style="display: none;"><strong>PAN:</strong> <span id="previewPan">-</span></p>
+                            <p><strong>Address:</strong> <span id="previewCustomerAddress">-</span></p>
+                        </div>
+                    </div>
                 </div>
 
                 <table class="invoice-table">
@@ -153,7 +170,7 @@ Bihar</textarea>
                     </thead>
                     <tbody id="previewItemsBody">
                         <tr>
-                            <td colspan="8" style="text-align: center; color: #999;">No items added</td>
+                            <td colspan="8" style="text-align: center; color: #999; padding: 40px;">No items added yet. Add items above to see them here.</td>
                         </tr>
                     </tbody>
                 </table>
@@ -188,11 +205,15 @@ Bihar</textarea>
                         <li>18k Returning 75% according to 18k rate</li>
                         <li>Note: GST applicable on gold only</li>
                     </ul>
+                    <div id="extraNotes" style="margin-top: 20px; padding-top: 15px; border-top: 1px solid #ddd; display: none;">
+                        <h5 style="color: #8b6914; margin-bottom: 10px;">Additional Notes:</h5>
+                        <p id="previewNotes" style="font-style: italic;"></p>
+                    </div>
                 </div>
 
                 <div class="signature">
-                    <p>For <strong>Sakshi Jewellers</strong></p>
-                    <br><br>
+                    <p>For <strong>💎 Sakshi Jewellers 💍</strong></p>
+                    <br><br><br>
                     <p class="sign-line">Authorised Signatory</p>
                 </div>
             </div>
