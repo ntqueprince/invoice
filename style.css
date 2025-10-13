@@ -389,20 +389,27 @@ h1::after {
 }
 
 .main-title h1 {
-    color: #b8860b;
-    font-size: 50px; /* ✅ Bigger text */
+    font-size: 52px;
     font-weight: 800;
     font-family: 'Georgia', serif;
     letter-spacing: 3px;
     text-align: center;
     text-transform: uppercase;
-    background: linear-gradient(135deg, #b8860b 0%, #daa520 50%, #b8860b 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    
+    /* ✨ New premium solid gold color (better in PDF) */
+    color: #b8860b;
+    background: none; /* remove gradient (it fades in PDF) */
+    -webkit-background-clip: unset;
+    -webkit-text-fill-color: #b8860b;
+    
+    /* 💎 Add glow + depth for rich appearance */
+    text-shadow:
+        1px 1px 2px #8b6914,
+        0 0 6px rgba(184, 134, 11, 0.6),
+        0 0 10px rgba(255, 215, 0, 0.4);
+
     padding: 25px 0;
     margin-bottom: 40px;
-
-    /* ✅ Full-width header style */
     display: block;
     width: 100%;
     border-bottom: 4px double #b8860b;
