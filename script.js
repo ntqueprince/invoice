@@ -188,15 +188,41 @@ function updatePreview() {
         }
     }
 
-    // Calculate GST first
-    const gstPercent = parseFloat(document.getElementById('gstPercent').value) || 3;
-    const cgstPercent = gstPercent / 2;
-    const sgstPercent = gstPercent / 2;
+    // ✅ Apply GST on total (Gold + Making)
+// Silver items ke liye optional GST system
 
-    const cgstAmount = (totalGoldAmount * cgstPercent) / 100;
-    const sgstAmount = (totalGoldAmount * sgstPercent) / 100;
+const gstPercent = parseFloat(document.getElementById('gstPercent').value) || 3;
+const cgstPercent = gstPercent / 2;
+const sgstPercent = gstPercent / 2;
+const applySilverGst = document.getElementById('applySilverGst')?.checked || false;
 
-    const subtotalWithGST = subtotal + cgstAmount + sgstAmount;
+// Alag totals for gold and silver
+let goldSubtotal = 0;
+let silverSubtotal = 0;
+
+// Calculate totals by type
+// NOTE: don't re-declare itemsBody if it's already declared earlier in this function
+for (let i = 0; i < itemsBody.rows.length; i++) {
+    const row = itemsBody.rows[i];
+    const itemType = row.cells[7].querySelector('select').value;
+    // remove currency symbol and commas robustly
+    const amountText = (row.cells[8].textContent || '').replace(/[^\d.\-]/g, '');
+    const amount = parseFloat(amountText) || 0;
+
+    if (itemType === 'gold') goldSubtotal += amount;
+    if (itemType === 'silver') silverSubtotal += amount;
+}
+
+// Silver par GST sirf tab lagega jab checkbox checked ho
+let taxableSubtotal = goldSubtotal + (applySilverGst ? silverSubtotal : 0);
+
+// GST only on taxable subtotal
+const cgstAmount = (taxableSubtotal * cgstPercent) / 100;
+const sgstAmount = (taxableSubtotal * sgstPercent) / 100;
+
+// Total including non-GST silver if unchecked
+const subtotalWithGST = subtotal + cgstAmount + sgstAmount;
+
 
     // Apply discount AFTER GST
     const discountValue = parseFloat(document.getElementById('discount').value) || 0;
