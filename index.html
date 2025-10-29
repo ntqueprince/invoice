@@ -3,18 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>💎 Sakshi Jewellers 💍 — Invoice Creator</title>
+    <!-- MODIFIED: Removed emojis from title -->
+    <title>Sakshi Jewellers — Invoice Creator</title>
     <link rel="stylesheet" href="style.css"> 
 </head>
 <body>
     <div class="container">
-        <h1>💎 Sakshi Jewellers 💍</h1>
+        <!-- MODIFIED: Removed emojis from app title -->
+        <h1 class="app-title">Sakshi Jewellers Invoice Creator</h1>
         <p class="created-by no-print">Created by Shivang</p>
-        <div class="admin-panel">
+        
+        <div class="admin-panel no-print">
             <div class="form-grid">
                 <div class="form-group">
                     <label>Shop Name</label>
-                    <input type="text" id="shopName" value="💎 Sakshi Jewellers 💍">
+                    <!-- MODIFIED: Removed emojis from default shop name -->
+                    <input type="text" id="shopName" value="Sakshi Jewellers">
                 </div>
                 <div class="form-group">
                     <label>Invoice No.</label>
@@ -49,11 +53,11 @@ Bihar</textarea>
                 <div class="form-group">
                     <label>GST % (Total)</label>
                     <div class="form-group">
-    <div class="checkbox-group">
-        <input type="checkbox" id="applySilverGst">
-        <span>Apply GST on Silver Items</span>
-    </div>
-</div>
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="applySilverGst">
+                            <span>Apply GST on Silver Items</span>
+                        </div>
+                    </div>
                     <input type="number" id="gstPercent" value="3" min="0" max="40" step="0.1">
                 </div>
                 <div class="form-group">
@@ -83,6 +87,15 @@ Bihar</textarea>
                         </select>
                     </div>
                 </div>
+                
+                <div class="form-group">
+                    <label>Terms & Conditions</label>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="showTerms" checked>
+                        <span>Show Terms & Conditions in Invoice</span>
+                    </div>
+                </div>
+
                 <div class="form-group">
                     <label>Customer Address</label>
                     <textarea id="customerAddress" placeholder="Enter customer address"></textarea>
@@ -93,9 +106,8 @@ Bihar</textarea>
                 </div>
             </div>
         </div>
-
-        <div class="items-section">
-            <h3>Invoice Items</h3>
+        <div class="items-section no-print">
+            <h3>Invoice Items (Admin)</h3>
             <table class="items-table">
                 <thead>
                     <tr>
@@ -107,32 +119,34 @@ Bihar</textarea>
                         <th>Rate (per 10gm)</th>
                         <th>Making</th>
                         <th>Type</th>
+                        <th>GST Amt</th>
                         <th>Amount</th>
                     </tr>
                 </thead>
                 <tbody id="itemsBody">
-                </tbody>
+                    </tbody>
             </table>
             <button class="btn btn-add" onclick="addItem()">➕ Add Item</button>
             <button class="btn btn-clear" onclick="clearItems()">🗑️ Clear All Items</button>
         </div>
-
-        <div class="download-section">
+        <div class="download-section no-print">
             <button class="btn btn-download" onclick="downloadPDF()">📄 Download PDF Invoice</button>
         </div>
-
         <div class="invoice-preview" id="invoicePreview">
-            <div class="invoice-watermark">💎 Sakshi Jewellers 💍</div>
+            <!-- MODIFIED: Removed emojis from watermark text -->
+            <div class="invoice-watermark">Sakshi Jewellers</div>
             <div class="invoice-content">
+                
                 <div class="main-title">
-                    <h1>💎 Sakshi Jewellers 💍</h1>
+                    <!-- MODIFIED: Removed emojis from preview title -->
+                    <h1 id="previewMainTitle">Sakshi Jewellers</h1>
                 </div>
 
                 <div class="invoice-header">
                     <div class="shop-info">
 
                         <div class="shop-details">
-                            <h3 id="previewShopName">🏪 🏪 Shop Details</h3>
+                            <h3 id="previewShopName">🏪 Shop Details</h3>
                             <p id="previewAddress">West from masjid Islampur,<br>Mohni Sakrauli (Nanpur), Sitamarhi<br>Bihar</p>
                             <p><strong>GSTIN:</strong> <span id="previewGstin">10EGNPK5303MTZE</span></p>
                             <p><strong>Phone:</strong> <span id="previewShopPhone">8298801698</span></p>
@@ -171,16 +185,16 @@ Bihar</textarea>
                             <th>Net Wt (g)</th>
                             <th>Rate (per 10gm)</th>
                             <th>Making</th>
+                            <th>GST Amt</th>
                             <th>Amount</th>
                         </tr>
                     </thead>
                     <tbody id="previewItemsBody">
                         <tr>
-                            <td colspan="8" style="text-align: center; color: #999; padding: 40px;">No items added yet. Add items above to see them here.</td>
+                            <td colspan="9" style="text-align: center; color: #999; padding: 40px;">No items added yet. Add items above to see them here.</td>
                         </tr>
                     </tbody>
                 </table>
-
                 <div class="invoice-totals">
                     <div class="total-row">
                         <span>Subtotal:</span>
@@ -217,16 +231,18 @@ Bihar</textarea>
                 </div>
 
                 <div class="signature">
-                    <p>For <strong>💎 Sakshi Jewellers 💍</strong></p>
+                    <!-- MODIFIED: Removed emojis from signature -->
+                    <p>For <strong id="previewSignatureName">Sakshi Jewellers</strong></p>
                     <br><br><br>
                     <p class="sign-line">Authorised Signatory</p>
                 </div>
             </div>
         </div>
-    </div>
+        </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    
     <script src="script.js"></script>
 </body>
 </html>
