@@ -13,37 +13,9 @@ body {
     overflow-x: hidden;
 }
 
-body::before {
-    content: '💎 Sakshi Jewellers 💍';
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) rotate(-45deg);
-    font-size: 100px;
-    font-weight: bold;
-    color: rgba(184, 134, 11, 0.03);
-    white-space: nowrap;
-    pointer-events: none;
-    z-index: 0;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.02);
-}
+/* MODIFIED: Removed body::before watermark */
 
-body::after {
-    content: '✨💎✨💍✨💎✨💍✨💎✨💍✨💎✨💍✨💎✨💍✨💎✨💍✨';
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 200%;
-    height: 200%;
-    font-size: 60px;
-    color: rgba(184, 134, 11, 0.02);
-    word-wrap: break-word;
-    pointer-events: none;
-    z-index: 0;
-    line-height: 2;
-    transform: rotate(-30deg);
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.01);
-}
+/* MODIFIED: Removed body::after emoji background */
 
 .container {
     max-width: 1400px;
@@ -52,7 +24,8 @@ body::after {
     z-index: 1;
 }
 
-h1 {
+/* This is the main title for the APP, not the invoice */
+h1.app-title {
     text-align: center;
     background: linear-gradient(135deg, #b8860b 0%, #daa520 50%, #b8860b 100%);
     -webkit-background-clip: text;
@@ -68,21 +41,7 @@ h1 {
     padding: 20px 0;
 }
 
-h1::before {
-    content: '✨';
-    position: absolute;
-    left: 15%;
-    font-size: 40px;
-    animation: sparkle 2s infinite;
-}
-
-h1::after {
-    content: '✨';
-    position: absolute;
-    right: 15%;
-    font-size: 40px;
-    animation: sparkle 2s infinite 1s;
-}
+/* MODIFIED: Removed sparkle animations */
 
 @keyframes sparkle {
     0%, 100% { opacity: 1; transform: scale(1) rotate(0deg); }
@@ -100,14 +59,7 @@ h1::after {
     overflow: hidden;
 }
 
-.admin-panel::before {
-    content: '💎';
-    position: absolute;
-    top: 20px;
-    right: 30px;
-    font-size: 30px;
-    opacity: 0.1;
-}
+/* MODIFIED: Removed emoji pseudo-element */
 
 .form-grid {
     display: grid;
@@ -130,11 +82,7 @@ h1::after {
     align-items: center;
 }
 
-.form-group label::before {
-    content: '💎';
-    margin-right: 8px;
-    font-size: 14px;
-}
+/* MODIFIED: Removed emoji pseudo-element from label */
 
 .form-group input,
 .form-group textarea,
@@ -205,14 +153,7 @@ h1::after {
     overflow: hidden;
 }
 
-.items-section::before {
-    content: '💍';
-    position: absolute;
-    top: 20px;
-    right: 30px;
-    font-size: 30px;
-    opacity: 0.1;
-}
+/* MODIFIED: Removed emoji pseudo-element */
 
 .items-section h3 {
     color: #8b6914;
@@ -223,10 +164,7 @@ h1::after {
     align-items: center;
 }
 
-.items-section h3::before {
-    content: '📝';
-    margin-right: 12px;
-}
+/* MODIFIED: Removed emoji pseudo-element */
 
 .items-table {
     width: 100%;
@@ -243,17 +181,17 @@ h1::after {
     padding: 18px 14px;
     text-align: left;
     font-weight: 700;
-    color: white;
     font-size: 15px;
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
 
 .items-table td {
-    padding: 15px 12px;
+    padding: 10px 8px; /* Reduced padding for inputs */
     border: 1px solid #e8e8e8;
     font-size: 15px;
     background: white;
+    vertical-align: middle;
 }
 
 .items-table tbody tr:nth-child(even) {
@@ -262,8 +200,6 @@ h1::after {
 
 .items-table tbody tr:hover {
     background: #f0f8ff;
-    transform: scale(1.001);
-    transition: all 0.2s;
 }
 
 .items-table input,
@@ -274,19 +210,14 @@ h1::after {
     border-radius: 8px;
     font-size: 15px;
     transition: all 0.2s;
+    background-color: #fff;
 }
 
 .items-table input:focus,
 .items-table select:focus {
     border-color: #b8860b;
     box-shadow: 0 0 0 2px rgba(184, 134, 11, 0.1);
-}
-
-.items-table td:first-child {
-    text-align: center;
-    width: 50px;
-    font-weight: bold;
-    color: #8b6914;
+    outline: none;
 }
 
 .btn {
@@ -364,6 +295,10 @@ h1::after {
 }
 
 .invoice-watermark {
+    /* MODIFIED: Hide the watermark entirely */
+    display: none; 
+    
+    /* Original styles (now irrelevant)
     position: absolute;
     top: 50%;
     left: 50%;
@@ -375,6 +310,7 @@ h1::after {
     pointer-events: none;
     z-index: 0;
     user-select: none;
+    */
 }
 
 .invoice-content {
@@ -382,12 +318,15 @@ h1::after {
     z-index: 1;
 }
 
+/* ❌ REMOVED: Logo container styling */
+
 /* Main Title Above All Sections */
 .main-title {
     text-align: center;
     margin-bottom: 25px;
 }
 
+/* This h1 is the INVOICE title, not the app title */
 .main-title h1 {
     font-size: 52px;
     font-weight: 800;
@@ -396,13 +335,13 @@ h1::after {
     text-align: center;
     text-transform: uppercase;
     
-    /* ✨ New premium solid gold color (better in PDF) */
+    /* Solid gold color (better in PDF) */
     color: #b8860b;
-    background: none; /* remove gradient (it fades in PDF) */
+    background: none; /* remove gradient */
     -webkit-background-clip: unset;
     -webkit-text-fill-color: #b8860b;
     
-    /* 💎 Add glow + depth for rich appearance */
+    /* Rich appearance text shadow */
     text-shadow:
         1px 1px 2px #8b6914,
         0 0 6px rgba(184, 134, 11, 0.6),
@@ -481,10 +420,7 @@ h1::after {
     align-items: center;
 }
 
-.bank-details h4::before {
-    content: '🏦';
-    margin-right: 6px;
-}
+/* MODIFIED: Removed emoji pseudo-element */
 
 .bank-details p {
     color: #333;
@@ -514,10 +450,7 @@ h1::after {
     justify-content: flex-end;
 }
 
-.invoice-meta h3::before {
-    content: '📄';
-    margin-right: 8px;
-}
+/* MODIFIED: Removed emoji pseudo-element */
 
 .invoice-meta p {
     color: #333;
@@ -545,10 +478,7 @@ h1::after {
     align-items: center;
 }
 
-.customer-details h4::before {
-    content: '👤';
-    margin-right: 8px;
-}
+/* MODIFIED: Removed emoji pseudo-element */
 
 .customer-details p {
     color: #333;
@@ -584,15 +514,6 @@ h1::after {
     color: #333;
     font-weight: 500;
 }
-/* Center align all numeric columns */
-.invoice-table td:nth-child(3),
-.invoice-table td:nth-child(4),
-.invoice-table td:nth-child(5),
-.invoice-table td:nth-child(6),
-.invoice-table td:nth-child(7),
-.invoice-table td:nth-child(8) {
-    text-align: center;
-}
 
 .invoice-table tbody tr:nth-child(even) {
     background: #fafafa;
@@ -601,6 +522,79 @@ h1::after {
 .invoice-table tbody tr:hover {
     background: #f0f8ff;
 }
+
+/* ================================= */
+/* == NEW ALIGNMENT RULES START == */
+/* ================================= */
+
+/* 1. Admin Table Alignment */
+.items-table th:nth-child(1), .items-table td:nth-child(1), /* # */
+.items-table th:nth-child(4), .items-table td:nth-child(4), /* Purity */
+.items-table th:nth-child(8), .items-table td:nth-child(8) { /* Type */
+    text-align: center;
+}
+
+.items-table th:nth-child(2), .items-table td:nth-child(2) { /* Description */
+    text-align: left;
+}
+
+.items-table th:nth-child(3), /* Qty */
+.items-table th:nth-child(5), /* Net Wt */
+.items-table th:nth-child(6), /* Rate */
+.items-table th:nth-child(7), /* Making */
+.items-table th:nth-child(9), /* Amount */
+.items-table th:nth-child(10) { /* GST Amt */
+    text-align: right;
+    padding-right: 10px;
+}
+
+/* Align admin inputs to the right */
+.items-table td:nth-child(3) input,
+.items-table td:nth-child(5) input,
+.items-table td:nth-child(6) input,
+.items-table td:nth-child(7) input {
+    text-align: right;
+}
+
+/* Align calculated admin cells to the right */
+.items-table td:nth-child(9),
+.items-table td:nth-child(10) {
+    text-align: right;
+    padding-right: 10px; /* Match input padding */
+    font-weight: bold;
+}
+/* Colors for admin calculated cells */
+.items-table td:nth-child(9) { color: #28a745; }
+.items-table td:nth-child(10) { color: #d9534f; }
+
+
+/* 2. Preview Table Alignment */
+.invoice-table th:nth-child(1), .invoice-table td:nth-child(1), /* # */
+.invoice-table th:nth-child(4), .invoice-table td:nth-child(4) { /* Purity */
+    text-align: center;
+}
+
+.invoice-table th:nth-child(2), .invoice-table td:nth-child(2) { /* Description */
+    text-align: left;
+}
+
+.invoice-table th:nth-child(3), .invoice-table td:nth-child(3), /* Qty */
+.invoice-table th:nth-child(5), .invoice-table td:nth-child(5), /* Net Wt */
+.invoice-table th:nth-child(6), .invoice-table td:nth-child(6), /* Rate */
+.invoice-table th:nth-child(7), .invoice-table td:nth-child(7), /* Making */
+.invoice-table th:nth-child(8), .invoice-table td:nth-child(8), /* Amount */
+.invoice-table th:nth-child(9), .invoice-table td:nth-child(9) { /* GST Amt */
+    text-align: right;
+}
+/* Colors for preview calculated cells */
+.invoice-table td:nth-child(8) { color: #28a745; font-weight: bold; }
+.invoice-table td:nth-child(9) { color: #d9534f; font-weight: bold; }
+
+
+/* =============================== */
+/* == NEW ALIGNMENT RULES END == */
+/* =============================== */
+
 
 .invoice-totals {
     float: right;
@@ -645,6 +639,22 @@ h1::after {
     margin-bottom: 40px;
     border: 2px solid #f0e68c;
     box-shadow: 0 4px 15px rgba(184, 134, 11, 0.1);
+    
+    /* --- MODIFIED: Added styles for smooth toggle --- */
+    overflow: hidden;
+    transition: all 0.4s ease-in-out;
+    max-height: 1000px; /* Large enough to fit content */
+    opacity: 1;
+}
+
+/* --- ADDED: Class to hide terms section smoothly --- */
+.terms.terms-hidden {
+    max-height: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    margin-bottom: 0;
+    opacity: 0;
+    border-width: 0;
 }
 
 .terms h4 {
@@ -658,10 +668,7 @@ h1::after {
     align-items: center;
 }
 
-.terms h4::before {
-    content: '📋';
-    margin-right: 10px;
-}
+/* MODIFIED: Removed emoji pseudo-element */
 
 .terms ul {
     list-style-position: inside;
@@ -706,70 +713,6 @@ h1::after {
     border: 2px solid #dee2e6;
 }
 
-@media print {
-    body {
-        background: white;
-        padding: 0;
-    }
-    body::before,
-    body::after {
-        display: none;
-    }
-    .admin-panel,
-    .items-section,
-    .download-section,
-    h1 {
-        display: none !important;
-    }
-    .invoice-preview {
-        box-shadow: none;
-        padding: 20px;
-        border: none;
-    }
-}
-
-@page {
-    size: A4;
-    margin: 15mm;
-}
-
-@media (max-width: 768px) {
-    .form-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .invoice-header {
-        grid-template-columns: 1fr;
-        gap: 15px;
-    }
-    
-    .shop-info {
-        grid-template-columns: 1fr;
-    }
-    
-    .right-section {
-        flex-direction: column;
-        gap: 15px;
-    }
-    
-    .invoice-totals {
-        width: 100%;
-        float: none;
-    }
-    
-    h1 {
-        font-size: 36px;
-    }
-    
-    .items-table {
-        font-size: 12px;
-    }
-    
-    .items-table th,
-    .items-table td {
-        padding: 8px 6px;
-    }
-}
 .created-by {
   text-align: center;
   font-size: 1rem;
@@ -793,9 +736,102 @@ h1::after {
   border-radius: 10px;
 }
 
-/* Hide from PDF */
+/* Hide admin/non-PDF elements */
 @media print {
+  body {
+    background: white;
+    padding: 0;
+  }
+  body::before,
+  body::after {
+    display: none;
+  }
   .no-print {
     display: none !important;
   }
+  .invoice-preview {
+    box-shadow: none;
+    padding: 20px;
+    border: none;
+    margin: 0;
+  }
+  .container {
+    max-width: 100%;
+  }
+}
+
+@page {
+    size: A4;
+    margin: 15mm;
+}
+
+/* Responsive styles */
+@media (max-width: 1200px) {
+    .invoice-header,
+    .shop-info {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .invoice-totals {
+        width: 100%;
+        float: none;
+    }
+    
+    h1.app-title {
+        font-size: 36px;
+    }
+    
+    .items-table,
+    .invoice-table {
+        font-size: 12px;
+    }
+    
+    .items-table th,
+    .items-table td,
+    .invoice-table th,
+    .invoice-table td {
+        padding: 8px 6px;
+    }
+
+    .admin-panel,
+    .items-section,
+    .invoice-preview {
+        padding: 20px;
+    }
+}
+
+@media (max-width: 600px) {
+    /* Force tables to be scrollable on small screens */
+    .items-section,
+    .invoice-preview {
+        overflow-x: auto;
+    }
+    .items-table,
+    .invoice-table {
+        width: 800px; /* Force min-width */
+    }
+    h1.app-title {
+        font-size: 28px;
+        letter-spacing: 1px;
+    }
+    .main-title h1 {
+        font-size: 36px;
+    }
+    .invoice-totals {
+        width: 100%;
+    }
+    .btn {
+        width: 100%;
+        margin-bottom: 10px;
+    }
 }
